@@ -1,0 +1,50 @@
+Package: tidylearn
+Title: Tidy Supervised Learning Tools
+Version: 0.1.0
+Authors@R:
+  person(given = "Cesaire",
+         family = "Tobias",
+         role = c("aut", "cre"),
+         email = "cesaire@sheetsolved.com")
+Description: A comprehensive toolkit for supervised machine learning that follows tidyverse principles.
+  This package provides consistent interfaces for model training, evaluation, and visualization across various
+  supervised learning algorithms including regression, classification, tree-based methods, SVM, neural networks,
+  and deep learning approaches. It emphasizes intuitive syntax, pipeline-friendly operations, and informative visualizations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+  dplyr,
+  tidyr,
+  purrr,
+  tibble,
+  ggplot2,
+  glmnet,
+  randomForest,
+  rpart,
+  gbm,
+  e1071,
+  nnet,
+  keras,
+  tensorflow,
+  yardstick,
+  ROCR,
+  recipes,
+  rsample,
+  parsnip,
+  workflows,
+  tune,
+  magrittr,
+  rlang,
+  vctrs
+Suggests:
+  testthat (>= 3.0.0),
+  knitr,
+  rmarkdown,
+  covr,
+  xgboost,
+  caret
+Config/testthat/edition: 3
+VignetteBuilder: knitr

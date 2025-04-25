@@ -1,0 +1,174 @@
+# tidylearn: Tidy Supervised Learning in R
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/tidylearn)](https://CRAN.R-project.org/package=tidylearn)
+[![R-CMD-check](https://github.com/username/tidylearn/workflows/R-CMD-check/badge.svg)](https://github.com/username/tidylearn/actions)
+[![Codecov test coverage](https://codecov.io/gh/username/tidylearn/branch/main/graph/badge.svg)](https://app.codecov.io/gh/username/tidylearn?branch=main)
+
+## Overview
+
+`tidylearn` is a comprehensive R package for supervised machine learning that follows tidyverse principles. It provides a consistent, intuitive interface for various supervised learning algorithms, from simple linear regression to complex deep learning models.
+
+## Features
+
+- **Consistent API**: Uniform syntax across all models for simple training, evaluation, and prediction
+- **Tidy Integration**: Seamless integration with the tidyverse ecosystem
+- **Comprehensive Algorithms**: Support for a wide range of supervised learning methods
+- **Elegant Evaluation**: Built-in metrics and visualizations for model assessment
+- **Model Comparison**: Tools to compare and select the best models
+- **Pipeline-friendly**: Design that works well in data science workflows
+
+## Installation
+
+```r
+# Install from CRAN (when available)
+install.packages("tidylearn")
+
+# Or install the development version from GitHub
+# install.packages("devtools")
+devtools::install_github("username/tidylearn")
+```
+
+## Quick Start
+
+### Regression Example
+
+```r
+library(tidylearn)
+library(tidyverse)
+library(modeldata)
+
+# Load data
+data(Boston, package = "MASS")
+boston_df <- as_tibble(Boston)
+
+# Split data
+set.seed(123)
+train_indices <- sample(1:nrow(boston_df), 0.8 * nrow(boston_df))
+train_data <- boston_df[train_indices, ]
+test_data <- boston_df[-train_indices, ]
+
+# Train a model
+forest_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "forest"
+)
+
+# Evaluate the model
+tl_evaluate(forest_model, test_data)
+
+# Plot feature importance
+tl_plot_importance(forest_model)
+
+# Make predictions
+predictions <- predict(forest_model, test_data)
+```
+
+### Classification Example
+
+```r
+library(tidylearn)
+library(tidyverse)
+library(modeldata)
+
+# Load data
+data(credit_data)
+credit_df <- as_tibble(credit_data)
+credit_df$Status <- factor(credit_df$Status)
+
+# Split data
+set.seed(123)
+train_indices <- sample(1:nrow(credit_df), 0.8 * nrow(credit_df))
+train_data <- credit_df[train_indices, ]
+test_data <- credit_df[-train_indices, ]
+
+# Train a model
+log_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "logistic"
+)
+
+# Evaluate the model
+tl_evaluate(log_model, test_data)
+
+# Plot ROC curve
+tl_plot_roc(log_model, test_data)
+
+# Make predictions
+class_predictions <- predict(log_model, test_data, type = "class")
+prob_predictions <- predict(log_model, test_data, type = "prob")
+```
+
+## Supported Methods
+
+### Regression
+- Linear Regression
+- Polynomial Regression
+- Ridge Regression
+- Lasso Regression
+- Elastic Net
+- Decision Trees
+- Random Forests
+- Gradient Boosting
+- Support Vector Regression
+- Neural Networks
+- Deep Learning
+
+### Classification
+- Logistic Regression
+- Decision Trees
+- Random Forests
+- Gradient Boosting
+- Support Vector Machines
+- Neural Networks
+- Deep Learning
+
+## Key Functions
+
+| Function | Description |
+|----------|-------------|
+| `tl_model()` | Train a supervised learning model |
+| `predict()` | Make predictions using a trained model |
+| `tl_evaluate()` | Evaluate model performance |
+| `tl_cv()` | Perform cross-validation |
+| `tl_plot_*()` | Various plotting functions |
+| `tl_dashboard()` | Launch interactive model dashboard |
+
+## Documentation
+
+For detailed documentation, examples, and vignettes, please visit [https://username.github.io/tidylearn/](https://username.github.io/tidylearn/).
+
+## Contributing
+
+Contributions to tidylearn are welcome! Here's how you can contribute:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run the tests (`devtools::test()`)
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+Please make sure your code follows the [tidyverse style guide](https://style.tidyverse.org/).
+
+## Dependencies
+
+tidylearn integrates with several excellent machine learning packages:
+
+- **Core**: dplyr, tidyr, purrr, tibble, ggplot2, magrittr
+- **Models**: glmnet, randomForest, rpart, gbm, e1071, nnet, keras/tensorflow
+- **Evaluation**: yardstick, ROCR
+- **Preprocessing**: recipes, rsample
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- The tidyverse team for their elegant approach to data science in R
+- Authors of the various machine learning packages that tidylearn builds upon
+- The R community for their continued support and contributions

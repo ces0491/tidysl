@@ -1,0 +1,104 @@
+url: https://username.github.io/tidylearn/
+template:
+  bootstrap: 5
+  bootswatch: cosmo
+  bslib:
+    primary: "#0073b7"
+    base_font: {google: "Roboto"}
+    heading_font: {google: "Roboto Slab"}
+    code_font: {google: "Fira Mono"}
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github]
+  components:
+    intro:
+      text: Get started
+      href: articles/tidylearn.html
+    articles:
+      text: Articles
+      menu:
+      - text: "Regression Analysis"
+        href: articles/regression.html
+      - text: "Classification"
+        href: articles/classification.html
+      - text: "Advanced Evaluation Metrics"
+        href: articles/advanced-metrics.html
+    github:
+      icon: fab fa-github
+      href: https://github.com/username/tidylearn
+
+reference:
+  - title: "Core Functions"
+    desc: >
+      Main functions for model fitting, prediction, and evaluation
+    contents:
+      - tl_model
+      - predict.tidylearn_model
+      - tl_evaluate
+      - tl_cv
+      - print.tidylearn_model
+      - summary.tidylearn_model
+
+  - title: "Model Types"
+    desc: "Functions for specific model types"
+    contents:
+      - tl_fit_linear
+      - tl_fit_polynomial
+      - tl_fit_logistic
+      - tl_fit_tree
+      - tl_fit_forest
+      - tl_fit_boost
+      - tl_fit_ridge
+      - tl_fit_lasso
+      - tl_fit_elastic_net
+      - tl_fit_svm
+      - tl_fit_nn
+      - tl_fit_deep
+
+  - title: "Metrics and Evaluation"
+    desc: "Functions for model evaluation and metrics"
+    contents:
+      - tl_calc_regression_metrics
+      - tl_calc_classification_metrics
+      - tl_prediction_intervals
+      - tl_find_optimal_threshold
+
+  - title: "Visualization"
+    desc: "Functions for model visualization"
+    contents:
+      - plot.tidylearn_model
+      - matches("tl_plot_")
+      - tl_dashboard
+
+  - title: "Model Tuning"
+    desc: "Functions for hyperparameter tuning"
+    contents:
+      - tl_tune_nn
+      - tl_tune_deep
+
+  - title: "Utilities"
+    desc: "Utility functions"
+    contents:
+      - tl_check_packages
+      - matches("tl_extract_")
+
+articles:
+  - title: "Getting Started"
+    desc: >
+      Introduction to tidylearn and basic usage
+    contents:
+      - tidylearn
+  - title: "Model Types"
+    desc: >
+      Detailed guides for each type of model
+    contents:
+      - regression
+      - classification
+  - title: "Advanced Topics"
+    desc: >
+      Advanced topics and techniques
+    contents:
+      - advanced-metrics
+      - workflows

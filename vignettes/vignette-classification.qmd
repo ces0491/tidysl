@@ -1,0 +1,345 @@
+---
+title: "Classification with tidylearn"
+author: "tidylearn Team"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Classification with tidylearn}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Introduction
+
+This vignette demonstrates how to use the `tidylearn` package for classification tasks. The `tidylearn` package provides a consistent interface for various supervised learning methods following tidyverse principles.
+
+## Setup
+
+First, let's load the necessary packages:
+
+```{r packages, message=FALSE, warning=FALSE}
+library(tidylearn)
+library(tidyverse)
+library(modeldata)  # For example datasets
+```
+
+## Example Data
+
+We'll use the Credit data for our classification example:
+
+```{r data}
+data(credit_data)
+credit_df <- as_tibble(credit_data)
+
+# Convert Status to a factor
+credit_df$Status <- factor(credit_df$Status)
+
+# Split into training and testing sets
+set.seed(123)
+train_indices <- sample(1:nrow(credit_df), 0.8 * nrow(credit_df))
+train_data <- credit_df[train_indices, ]
+test_data <- credit_df[-train_indices, ]
+
+# Examine the data
+glimpse(credit_df)
+```
+
+## Logistic Regression
+
+Let's start with a logistic regression model:
+
+```{r logistic}
+# Fit a logistic regression model
+log_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "logistic"
+)
+
+# Print model summary
+print(log_model)
+summary(log_model)
+```
+
+## Model Evaluation
+
+We can evaluate the model on test data:
+
+```{r evaluation}
+# Evaluate on test data
+log_eval <- tl_evaluate(log_model, test_data)
+log_eval
+```
+
+## Model Visualization
+
+`tidylearn` provides various visualization functions for classification:
+
+```{r visualization}
+# Plot ROC curve
+tl_plot_roc(log_model, test_data)
+
+# Plot confusion matrix
+tl_plot_confusion(log_model, test_data)
+
+# Plot precision-recall curve
+tl_plot_precision_recall(log_model, test_data)
+
+# Plot calibration curve
+tl_plot_calibration(log_model, test_data)
+```
+
+## Finding the Optimal Threshold
+
+For binary classification, we can find the optimal threshold:
+
+```{r threshold}
+# Find the optimal threshold for F1 score
+threshold_results <- tl_find_optimal_threshold(
+  log_model, 
+  test_data, 
+  optimize_for = "f1"
+)
+
+# Display results
+threshold_results$optimal_threshold
+threshold_results$optimal_value
+
+# Plot threshold values
+ggplot(threshold_results$all_thresholds, aes(x = threshold, y = value)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = threshold_results$optimal_threshold, 
+             linetype = "dashed", color = "red") +
+  labs(title = "F1 Score by Threshold",
+       x = "Threshold",
+       y = "F1 Score") +
+  theme_minimal()
+```
+
+## Regularized Logistic Regression
+
+We can use regularization to improve performance:
+
+```{r regularized}
+# Fit a ridge-regularized logistic regression model
+ridge_log_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "ridge",
+  is_classification = TRUE
+)
+
+# Evaluate on test data
+ridge_log_eval <- tl_evaluate(ridge_log_model, test_data)
+ridge_log_eval
+
+# Plot regularization path
+tl_plot_regularization_path(ridge_log_model)
+```
+
+## Decision Trees and Random Forests
+
+Decision trees are popular for classification:
+
+```{r trees}
+# Fit a decision tree
+tree_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "tree",
+  is_classification = TRUE,
+  cp = 0.01
+)
+
+# Evaluate on test data
+tree_eval <- tl_evaluate(tree_model, test_data)
+tree_eval
+
+# Plot the decision tree
+if (requireNamespace("rpart.plot", quietly = TRUE)) {
+  tl_plot_tree(tree_model)
+}
+
+# Fit a random forest
+forest_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "forest",
+  is_classification = TRUE,
+  ntree = 100
+)
+
+# Evaluate on test data
+forest_eval <- tl_evaluate(forest_model, test_data)
+forest_eval
+
+# Plot feature importance
+tl_plot_importance(forest_model)
+```
+
+## Gradient Boosting
+
+Gradient boosting often achieves great performance:
+
+```{r boosting}
+# Fit a gradient boosting model
+boost_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "boost",
+  is_classification = TRUE,
+  n.trees = 100,
+  interaction.depth = 3,
+  shrinkage = 0.1
+)
+
+# Evaluate on test data
+boost_eval <- tl_evaluate(boost_model, test_data)
+boost_eval
+
+# Plot feature importance
+tl_plot_importance(boost_model)
+
+# Partial dependence plot for an important feature
+tl_plot_partial_dependence(boost_model, "Age")
+```
+
+## Support Vector Machines
+
+SVMs can be effective for classification:
+
+```{r svm}
+# Fit an SVM model
+svm_model <- tl_model(
+  data = train_data,
+  formula = Status ~ .,
+  method = "svm",
+  is_classification = TRUE,
+  kernel = "radial",
+  probability = TRUE
+)
+
+# Evaluate on test data
+svm_eval <- tl_evaluate(svm_model, test_data)
+svm_eval
+
+# Plot decision boundary for two features
+if (requireNamespace("e1071", quietly = TRUE)) {
+  tl_plot_svm_boundary(svm_model, "Income", "Price")
+}
+```
+
+## Cross-Validation
+
+We can use cross-validation to assess model performance:
+
+```{r cv}
+# Perform cross-validation for logistic model
+log_cv <- tl_cv(
+  data = train_data,
+  formula = Status ~ .,
+  method = "logistic",
+  folds = 5
+)
+
+# Examine CV results
+log_cv$summary
+
+# Plot CV results
+tl_plot_cv_results(log_cv)
+```
+
+## Advanced Evaluation Metrics
+
+`tidylearn` provides additional evaluation plots for classification:
+
+```{r advanced-metrics}
+# Lift chart
+tl_plot_lift(forest_model, test_data)
+
+# Gain chart
+tl_plot_gain(forest_model, test_data)
+```
+
+## Model Comparison
+
+We can compare the performance of different models:
+
+```{r comparison}
+# Compare models
+tl_plot_model_comparison(
+  log_model, ridge_log_model, tree_model, forest_model, boost_model, svm_model,
+  new_data = test_data,
+  names = c("Logistic", "Ridge", "Tree", "Random Forest", "Boost", "SVM")
+)
+
+# Compare feature importance
+tl_plot_importance_comparison(
+  tree_model, forest_model, boost_model,
+  names = c("Tree", "Random Forest", "Boost")
+)
+```
+
+## Neural Networks
+
+For complex relationships, we can use neural networks:
+
+```{r neural-networks}
+# Check if nnet is available
+if (requireNamespace("nnet", quietly = TRUE)) {
+  # Fit a neural network
+  nn_model <- tl_model(
+    data = train_data,
+    formula = Status ~ .,
+    method = "nn",
+    is_classification = TRUE,
+    size = 5,
+    decay = 0.1
+  )
+  
+  # Evaluate on test data
+  nn_eval <- tl_evaluate(nn_model, test_data)
+  nn_eval
+  
+  # Plot neural network architecture if NeuralNetTools is available
+  if (requireNamespace("NeuralNetTools", quietly = TRUE)) {
+    tl_plot_nn_architecture(nn_model)
+  }
+}
+```
+
+## Model Dashboard
+
+`tidylearn` provides an interactive dashboard for exploring model performance:
+
+```{r dashboard, eval=FALSE}
+# Launch dashboard (only run interactively)
+if (requireNamespace("shiny", quietly = TRUE) && 
+    requireNamespace("shinydashboard", quietly = TRUE) && 
+    requireNamespace("DT", quietly = TRUE)) {
+  tl_dashboard(forest_model, test_data)
+}
+```
+
+## Conclusion
+
+This vignette demonstrated how to use the `tidylearn` package for classification tasks. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
+
+Key features:
+- Simple, consistent API across different models
+- Integration with the tidyverse
+- Comprehensive evaluation metrics
+- Informative visualizations
+- Support for model comparison
+
+In the regression vignette, we explored how to use the package for regression tasks.

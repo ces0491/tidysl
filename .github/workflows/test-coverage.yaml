@@ -1,0 +1,51 @@
+on:
+  push:
+  branches: [main, master]
+pull_request:
+  branches: [main, master]
+
+name: test-coverage
+
+jobs:
+  test-coverage:
+  runs-on: ubuntu-latest
+env:
+  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+steps:
+  - uses: actions/checkout@v2
+
+- uses: r-lib/actions/setup-r@v2
+with:
+  use-public-rspm: true
+
+  - uses: r-lib/actions/setup-r-dependencies@v2
+with:
+  extra-packages: covr
+
+- name: Install optional dependencies
+run: |
+install.packages(c("rpart", "randomForest", "gbm", "e1071", "glmnet", "nnet"))
+  shell: Rscript {0}
+
+- name: Test coverage
+run: |
+covr::codecov(
+  quiet = FALSE,
+  clean = FALSE,
+  install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+)
+  shell: Rscript {0}
+
+- name: Show testthat output
+if: always()
+  run: |
+## Print out the output of the tests
+    find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+      shell: bash
+
+    - name: Upload test results
+    if: failure()
+      uses: actions/upload-artifact@main
+    with:
+      name: coverage-test-failures
+    path: ${{ runner.temp }}/package

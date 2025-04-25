@@ -1,0 +1,165 @@
+---
+title: "tidylearn Cheat Sheet"
+author: "tidylearn Team"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    theme: flatly
+    code-fold: false
+    df-print: paged
+  pdf:
+    toc: true
+    number-sections: false
+    colorlinks: true
+execute:
+  echo: true
+  eval: false
+---
+
+## Core Functions
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_model()` | Fit a supervised learning model | `tl_model(data, medv ~ ., method = "linear")` |
+| `predict()` | Generate predictions | `predict(model, new_data)` |
+| `tl_evaluate()` | Evaluate model performance | `tl_evaluate(model, test_data)` |
+| `tl_cv()` | Perform cross-validation | `tl_cv(data, formula, method, folds = 5)` |
+| `summary()` | Show model summary | `summary(model)` |
+
+## Model Types
+
+| Method | Description | Usage |
+|--------|-------------|-------|
+| `"linear"` | Linear regression | `tl_model(data, y ~ x, method = "linear")` |
+| `"polynomial"` | Polynomial regression | `tl_model(data, y ~ x, method = "polynomial", degree = 2)` |
+| `"logistic"` | Logistic regression | `tl_model(data, factor_y ~ x, method = "logistic")` |
+| `"ridge"` | Ridge regression | `tl_model(data, y ~ x, method = "ridge")` |
+| `"lasso"` | Lasso regression | `tl_model(data, y ~ x, method = "lasso")` |
+| `"elastic_net"` | Elastic Net | `tl_model(data, y ~ x, method = "elastic_net", alpha = 0.5)` |
+| `"tree"` | Decision tree | `tl_model(data, y ~ x, method = "tree")` |
+| `"forest"` | Random forest | `tl_model(data, y ~ x, method = "forest", ntree = 100)` |
+| `"boost"` | Gradient boosting | `tl_model(data, y ~ x, method = "boost", n.trees = 100)` |
+| `"svm"` | Support vector machine | `tl_model(data, y ~ x, method = "svm", kernel = "radial")` |
+| `"nn"` | Neural network | `tl_model(data, y ~ x, method = "nn", size = 5)` |
+| `"deep"` | Deep learning | `tl_model(data, y ~ x, method = "deep", hidden_layers = c(32, 16))` |
+
+## Regression Visualization
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_plot_actual_predicted()` | Actual vs predicted values | `tl_plot_actual_predicted(model, test_data)` |
+| `tl_plot_residuals()` | Residuals plot | `tl_plot_residuals(model, type = "fitted")` |
+| `tl_plot_diagnostics()` | Regression diagnostics | `tl_plot_diagnostics(model)` |
+| `tl_plot_intervals()` | Confidence/prediction intervals | `tl_plot_intervals(model, new_data)` |
+
+## Classification Visualization
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_plot_roc()` | ROC curve | `tl_plot_roc(model, test_data)` |
+| `tl_plot_confusion()` | Confusion matrix | `tl_plot_confusion(model, test_data)` |
+| `tl_plot_calibration()` | Calibration curve | `tl_plot_calibration(model, test_data)` |
+| `tl_plot_precision_recall()` | Precision-recall curve | `tl_plot_precision_recall(model, test_data)` |
+| `tl_plot_lift()` | Lift chart | `tl_plot_lift(model, test_data)` |
+| `tl_plot_gain()` | Gain chart | `tl_plot_gain(model, test_data)` |
+
+## Model Interpretation
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_plot_importance()` | Feature importance | `tl_plot_importance(model, top_n = 10)` |
+| `tl_plot_partial_dependence()` | Partial dependence plot | `tl_plot_partial_dependence(model, "variable")` |
+| `tl_plot_tree()` | Decision tree visualization | `tl_plot_tree(model)` |
+| `tl_plot_svm_boundary()` | SVM decision boundary | `tl_plot_svm_boundary(model, "x1", "x2")` |
+| `tl_plot_nn_architecture()` | Neural network structure | `tl_plot_nn_architecture(model)` |
+
+## Model Comparison & Selection
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_plot_model_comparison()` | Compare model performance | `tl_plot_model_comparison(model1, model2, test_data)` |
+| `tl_plot_importance_comparison()` | Compare feature importance | `tl_plot_importance_comparison(model1, model2)` |
+| `tl_find_optimal_threshold()` | Find optimal threshold | `tl_find_optimal_threshold(model, optimize_for = "f1")` |
+| `tl_tune_nn()` | Tune neural network | `tl_tune_nn(data, formula, sizes = c(5, 10))` |
+| `tl_tune_deep()` | Tune deep learning model | `tl_tune_deep(data, formula)` |
+| `tl_plot_regularization_path()` | Visualize regularization | `tl_plot_regularization_path(model)` |
+| `tl_plot_cv_results()` | Visualize CV results | `tl_plot_cv_results(cv_results)` |
+
+## Interactive Exploration
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `tl_dashboard()` | Interactive model dashboard | `tl_dashboard(model, test_data)` |
+
+## Prediction Types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `"response"` | Default predictions | `predict(model, new_data, type = "response")` |
+| `"prob"` | Probability predictions | `predict(model, new_data, type = "prob")` |
+| `"class"` | Class predictions | `predict(model, new_data, type = "class")` |
+
+## Common Workflows
+
+### Basic Workflow
+```{r}
+# Train model
+model <- tl_model(train_data, y ~ ., method = "forest")
+
+# Evaluate
+tl_evaluate(model, test_data)
+
+# Visualize
+tl_plot_importance(model)
+
+# Predict
+predictions <- predict(model, new_data)
+```
+
+### Model Selection Workflow
+```{r}
+# Train several models
+model1 <- tl_model(train_data, y ~ ., method = "linear")
+model2 <- tl_model(train_data, y ~ ., method = "forest")
+model3 <- tl_model(train_data, y ~ ., method = "boost")
+
+# Compare performance
+tl_plot_model_comparison(model1, model2, model3, 
+                         test_data, 
+                         names = c("Linear", "Forest", "Boost"))
+
+# Compare importance
+tl_plot_importance_comparison(model1, model2, model3)
+```
+
+### Cross-Validation Workflow
+```{r}
+# Perform cross-validation
+cv_results <- tl_cv(data, y ~ ., method = "forest", folds = 5)
+
+# Examine results
+cv_results$summary
+
+# Visualize
+tl_plot_cv_results(cv_results)
+```
+
+## Data Preparation with Recipes
+
+```{r}
+# Create a recipe for preprocessing
+library(recipes)
+rec <- recipe(y ~ ., data = train_data) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  prep(training = train_data)
+
+# Apply preprocessing
+train_processed <- bake(rec, new_data = train_data)
+test_processed <- bake(rec, new_data = test_data)
+
+# Train model on processed data
+model <- tl_model(train_processed, y ~ ., method = "forest")
+```

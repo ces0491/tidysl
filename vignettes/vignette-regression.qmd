@@ -1,0 +1,244 @@
+---
+title: "Regression Analysis with tidylearn"
+author: "tidylearn Team"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Regression Analysis with tidylearn}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Introduction
+
+This vignette demonstrates how to use the `tidylearn` package for regression analysis. The `tidylearn` package provides a consistent interface for various supervised learning methods following tidyverse principles.
+
+## Setup
+
+First, let's load the necessary packages:
+
+```{r packages, message=FALSE, warning=FALSE}
+library(tidylearn)
+library(tidyverse)
+library(modeldata)  # For example datasets
+```
+
+## Example Data
+
+We'll use the Boston housing dataset for our regression example:
+
+```{r data}
+data(Boston, package = "MASS")
+boston_df <- as_tibble(Boston)
+
+# Split into training and testing sets
+set.seed(123)
+train_indices <- sample(1:nrow(boston_df), 0.8 * nrow(boston_df))
+train_data <- boston_df[train_indices, ]
+test_data <- boston_df[-train_indices, ]
+
+# Examine the data
+glimpse(boston_df)
+```
+
+## Linear Regression
+
+Let's start with a simple linear regression model:
+
+```{r linear}
+# Fit a linear regression model
+lm_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "linear"
+)
+
+# Print model summary
+print(lm_model)
+summary(lm_model)
+```
+
+## Model Evaluation
+
+We can evaluate the model on test data:
+
+```{r evaluation}
+# Evaluate on test data
+lm_eval <- tl_evaluate(lm_model, test_data)
+lm_eval
+```
+
+## Model Visualization
+
+`tidylearn` provides various visualization functions:
+
+```{r visualization}
+# Plot actual vs predicted
+tl_plot_actual_predicted(lm_model, test_data)
+
+# Plot residuals
+tl_plot_residuals(lm_model, test_data)
+
+# Plot diagnostic plots
+diagnostic_plots <- tl_plot_diagnostics(lm_model)
+diagnostic_plots$residuals_vs_fitted
+diagnostic_plots$qq
+diagnostic_plots$scale_location
+diagnostic_plots$residuals_vs_leverage
+```
+
+## Polynomial Regression
+
+For non-linear relationships, we can use polynomial regression:
+
+```{r polynomial}
+# Fit a polynomial regression model
+poly_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "polynomial",
+  degree = 2
+)
+
+# Evaluate on test data
+poly_eval <- tl_evaluate(poly_model, test_data)
+poly_eval
+```
+
+## Ridge Regression
+
+For regularization, we can use Ridge regression:
+
+```{r ridge}
+# Fit a ridge regression model
+ridge_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "ridge"
+)
+
+# Evaluate on test data
+ridge_eval <- tl_evaluate(ridge_model, test_data)
+ridge_eval
+
+# Plot regularization path
+tl_plot_regularization_path(ridge_model)
+```
+
+## Lasso Regression
+
+Lasso regression for feature selection:
+
+```{r lasso}
+# Fit a lasso regression model
+lasso_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "lasso"
+)
+
+# Evaluate on test data
+lasso_eval <- tl_evaluate(lasso_model, test_data)
+lasso_eval
+
+# Plot feature importance
+tl_plot_importance_regularized(lasso_model)
+```
+
+## Cross-Validation
+
+We can use cross-validation to assess model performance:
+
+```{r cv}
+# Perform cross-validation for linear model
+lm_cv <- tl_cv(
+  data = train_data,
+  formula = medv ~ .,
+  method = "linear",
+  folds = 5
+)
+
+# Examine CV results
+lm_cv$summary
+
+# Plot CV results
+tl_plot_cv_results(lm_cv)
+```
+
+## Tree-Based Models
+
+Random forests often perform well for regression tasks:
+
+```{r forest}
+# Fit a random forest model
+forest_model <- tl_model(
+  data = train_data,
+  formula = medv ~ .,
+  method = "forest",
+  ntree = 100
+)
+
+# Evaluate on test data
+forest_eval <- tl_evaluate(forest_model, test_data)
+forest_eval
+
+# Plot feature importance
+tl_plot_importance(forest_model)
+
+# Partial dependence plot for an important feature
+tl_plot_partial_dependence(forest_model, "lstat")
+```
+
+## Model Comparison
+
+We can compare the performance of different models:
+
+```{r comparison}
+# Compare models
+tl_plot_model_comparison(
+  lm_model, poly_model, ridge_model, lasso_model, forest_model,
+  new_data = test_data,
+  names = c("Linear", "Polynomial", "Ridge", "Lasso", "Random Forest")
+)
+
+# Compare feature importance
+tl_plot_importance_comparison(
+  ridge_model, lasso_model, forest_model,
+  names = c("Ridge", "Lasso", "Random Forest")
+)
+```
+
+## Predictions with Intervals
+
+For linear and polynomial models, we can get prediction intervals:
+
+```{r intervals}
+# Get prediction intervals
+intervals <- tl_prediction_intervals(lm_model, test_data)
+head(intervals)
+
+# Plot with intervals
+tl_plot_intervals(lm_model, test_data)
+```
+
+## Conclusion
+
+This vignette demonstrated how to use the `tidylearn` package for regression analysis. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
+
+Key features:
+- Simple, consistent API across different models
+- Integration with the tidyverse
+- Comprehensive evaluation metrics
+- Informative visualizations
+- Support for model comparison
+
+In the classification vignette, we'll explore how to use the package for classification tasks.
