@@ -1,4 +1,5 @@
 #' @title Regression Functions for tidylearn
+#' @name tidylearn-regression
 #' @description Linear and polynomial regression functionality
 #' @importFrom stats lm predict poly model.matrix
 #' @importFrom tibble tibble

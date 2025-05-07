@@ -1,4 +1,5 @@
 #' @title Metrics Functionality for tidylearn
+#' @name tidylearn-metrics
 #' @description Functions for calculating model evaluation metrics
 #' @importFrom yardstick accuracy precision recall f_meas rmse rsq mae mape roc_auc pr_auc
 #' @importFrom ROCR prediction performance

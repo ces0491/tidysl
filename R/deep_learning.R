@@ -1,4 +1,5 @@
 #' @title Deep Learning for tidylearn
+#' @name tidylearn-deep-learning
 #' @description Deep learning functionality using Keras/TensorFlow
 #' @importFrom stats model.matrix as.formula
 #' @importFrom tibble tibble as_tibble

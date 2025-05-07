@@ -1,4 +1,5 @@
 #' @title Classification Functions for tidylearn
+#' @name tidylearn-classification
 #' @description Logistic regression and classification metrics functionality
 #' @importFrom stats glm predict binomial
 #' @importFrom tibble tibble as_tibble

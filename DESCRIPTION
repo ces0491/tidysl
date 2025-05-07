@@ -1,50 +1,83 @@
 Package: tidylearn
-Title: Tidy Supervised Learning Tools
+Title: A Tidy Approach to Supervised Learning
 Version: 0.1.0
-Authors@R:
-  person(given = "Cesaire",
-         family = "Tobias",
-         role = c("aut", "cre"),
-         email = "cesaire@sheetsolved.com")
-Description: A comprehensive toolkit for supervised machine learning that follows tidyverse principles.
-  This package provides consistent interfaces for model training, evaluation, and visualization across various
-  supervised learning algorithms including regression, classification, tree-based methods, SVM, neural networks,
-  and deep learning approaches. It emphasizes intuitive syntax, pipeline-friendly operations, and informative visualizations.
+Authors@R: 
+    person("Author", "Cesaire Tobias", email = "cesaire@sheetsolved.com", role = c("aut", "cre"),
+           comment = c(ORCID = ""))
+Description: Provides a tidy and user-friendly interface to supervised 
+    machine learning methods. The package integrates with the tidyverse 
+    ecosystem and offers functions for fitting, evaluating, visualizing, 
+    and interpreting machine learning models. It supports regression and 
+    classification tasks with a consistent API across different learning 
+    algorithms, including linear models, decision trees, random forests, 
+    boosting, support vector machines, and neural networks. The package 
+    includes tools for model tuning, cross-validation, feature selection, 
+    model diagnostics, and advanced visualizations of model performance.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.6.0)
 Imports:
-  dplyr,
-  tidyr,
-  purrr,
-  tibble,
-  ggplot2,
-  glmnet,
-  randomForest,
-  rpart,
-  gbm,
-  e1071,
-  nnet,
-  keras,
-  tensorflow,
-  yardstick,
-  ROCR,
-  recipes,
-  rsample,
-  parsnip,
-  workflows,
-  tune,
-  magrittr,
-  rlang,
-  vctrs
+    dplyr,
+    e1071,
+    gbm,
+    glmnet,
+    ggplot2,
+    magrittr,
+    nnet,
+    purrr,
+    randomForest,
+    rlang,
+    rpart,
+    rsample,
+    stats,
+    tibble,
+    tidyr,
+    ROCR,
+    yardstick
 Suggests:
-  testthat (>= 3.0.0),
-  knitr,
-  rmarkdown,
-  covr,
-  xgboost,
-  caret
+    car,
+    caret,
+    keras,
+    lmtest,
+    moments,
+    pmml,
+    recipes,
+    reticulate,
+    rpart.plot,
+    shiny,
+    shinydashboard,
+    tensorflow,
+    testthat (>= 3.0.0),
+    workflows,
+    xgboost,
+    GGally,
+    gridExtra,
+    onnx,
+    parsnip,
+    knitr
 Config/testthat/edition: 3
+URL: https://github.com/ces0491/tidylearn
+BugReports: https://github.com/ces0491/tidylearn/issues
 VignetteBuilder: knitr
+Collate:
+    'core.R'
+    'classification.R'
+    'deep_learning.R'
+    'diagnostics.R'
+    'integration.R'
+    'interactions.R'
+    'metrics.R'
+    'model_selection.R'
+    'neural_networks.R'
+    'pipeline.R'
+    'regression.R'
+    'regularization.R'
+    'svm.R'
+    'trees.R'
+    'tuning.R'
+    'utils.R'
+    'visualization.R'
+    'xgboost.R'

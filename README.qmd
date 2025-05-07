@@ -1,144 +1,266 @@
-# tidylearn: Tidy Supervised Learning in R
+# tidylearn: A Tidy Approach to Supervised Learning in R
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/tidylearn)](https://CRAN.R-project.org/package=tidylearn)
-[![R-CMD-check](https://github.com/username/tidylearn/workflows/R-CMD-check/badge.svg)](https://github.com/username/tidylearn/actions)
-[![Codecov test coverage](https://codecov.io/gh/username/tidylearn/branch/main/graph/badge.svg)](https://app.codecov.io/gh/username/tidylearn?branch=main)
+[![CRAN](https://img.shields.io/cran/v/tidylearn)](https://cran.r-project.org/package=tidylearn)
+[![R-CMD-check](https://github.com/ces0491/tidylearn/workflows/R-CMD-check/badge.svg)](https://github.com/ces0491/tidylearn/actions)
+[![Codecov](https://codecov.io/gh/ces0491/tidylearn/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ces0491/tidylearn)
+[![Downloads](https://cranlogs.r-pkg.org/badges/tidylearn)](https://cran.r-project.org/package=tidylearn)
 
 ## Overview
 
-`tidylearn` is a comprehensive R package for supervised machine learning that follows tidyverse principles. It provides a consistent, intuitive interface for various supervised learning algorithms, from simple linear regression to complex deep learning models.
+`tidylearn` is a comprehensive machine learning package for R that provides a unified, tidy approach to supervised learning models. It is designed to be user-friendly and to integrate seamlessly with the tidyverse ecosystem.
+
+The package simplifies the process of building, evaluating, and comparing different models, while providing rich diagnostics and visualizations to help you understand model behavior and performance.
 
 ## Features
 
-- **Consistent API**: Uniform syntax across all models for simple training, evaluation, and prediction
-- **Tidy Integration**: Seamless integration with the tidyverse ecosystem
-- **Comprehensive Algorithms**: Support for a wide range of supervised learning methods
-- **Elegant Evaluation**: Built-in metrics and visualizations for model assessment
-- **Model Comparison**: Tools to compare and select the best models
-- **Pipeline-friendly**: Design that works well in data science workflows
+- **Unified interface** for various machine learning algorithms
+- **Comprehensive model types** including:
+  - Linear and polynomial regression
+  - Logistic regression and classification
+  - Regularization (Ridge, LASSO, Elastic Net)
+  - Decision trees and Random Forests
+  - Gradient Boosting and XGBoost
+  - Support Vector Machines
+  - Neural Networks
+- **Advanced diagnostics** for model assumptions and influence analysis
+- **Interactive visualizations** for model understanding and comparison
+- **Hyperparameter tuning** with grid and random search
+- **Cross-validation** for robust model evaluation
+- **Pipeline interface** for end-to-end modeling workflows
+- **Integration** with other popular R packages like caret and tidymodels
 
 ## Installation
 
 ```r
-# Install from CRAN (when available)
+# Install from CRAN
 install.packages("tidylearn")
 
 # Or install the development version from GitHub
 # install.packages("devtools")
-devtools::install_github("username/tidylearn")
+devtools::install_github("ces0491/tidylearn")
 ```
 
 ## Quick Start
 
-### Regression Example
-
 ```r
 library(tidylearn)
-library(tidyverse)
-library(modeldata)
 
-# Load data
-data(Boston, package = "MASS")
-boston_df <- as_tibble(Boston)
+# Load example data
+data(mtcars)
 
-# Split data
-set.seed(123)
-train_indices <- sample(1:nrow(boston_df), 0.8 * nrow(boston_df))
-train_data <- boston_df[train_indices, ]
-test_data <- boston_df[-train_indices, ]
+# Train a simple linear model
+model <- tl_model(mtcars, mpg ~ wt + hp + am, method = "linear")
 
-# Train a model
-forest_model <- tl_model(
-  data = train_data,
-  formula = medv ~ .,
-  method = "forest"
+# Make predictions
+predictions <- predict(model, newdata = mtcars)
+
+# Evaluate model performance
+metrics <- tl_evaluate(model)
+print(metrics)
+
+# Plot diagnostics
+plot(model, type = "residuals")
+
+# Create an end-to-end modeling pipeline
+pipeline <- tl_pipeline(
+  data = mtcars,
+  formula = mpg ~ .,
+  models = list(
+    linear = list(method = "linear"),
+    lasso = list(method = "lasso"),
+    forest = list(method = "forest", ntree = 500)
+  )
 )
 
-# Evaluate the model
-tl_evaluate(forest_model, test_data)
+# Run the pipeline
+results <- tl_run_pipeline(pipeline)
+
+# Compare model performance
+tl_compare_pipeline_models(results)
+
+# Get the best model
+best_model <- tl_get_best_model(results)
+```
+
+## Main Functions
+
+### Core Modeling
+
+- `tl_model()` - Create a supervised learning model
+- `predict()` - Make predictions with a model
+- `tl_evaluate()` - Evaluate model performance
+
+### Model Selection and Tuning
+
+- `tl_step_selection()` - Perform stepwise feature selection
+- `tl_tune_grid()` - Tune hyperparameters with grid search
+- `tl_tune_random()` - Tune hyperparameters with random search
+- `tl_tune_xgboost()` - Tune XGBoost models
+- `tl_compare_cv()` - Compare models with cross-validation
+
+### Diagnostics and Visualization
+
+- `tl_check_assumptions()` - Check model assumptions
+- `tl_influence_measures()` - Calculate influence metrics
+- `tl_plot_importance()` - Plot feature importance
+- `tl_plot_interaction()` - Visualize interaction effects
+- `tl_diagnostic_dashboard()` - Create comprehensive diagnostic dashboard
+- `tl_plot_xgboost_shap_summary()` - Plot SHAP values for model interpretation
+
+### Pipeline Interface
+
+- `tl_pipeline()` - Create an end-to-end modeling pipeline
+- `tl_run_pipeline()` - Run a modeling pipeline
+- `tl_get_best_model()` - Extract the best model from a pipeline
+- `tl_compare_pipeline_models()` - Compare models from a pipeline
+
+### Integration
+
+- `tl_to_caret()` - Convert a tidylearn model to a caret model
+- `tl_from_caret()` - Convert a caret model to a tidylearn model
+- `tl_to_tidymodels()` - Convert a tidylearn model to a tidymodels workflow
+- `tl_from_tidymodels()` - Convert a tidymodels workflow to a tidylearn model
+- `tl_export_model()` - Export a model to various formats (RDS, ONNX, PMML, JSON)
+- `tl_import_model()` - Import a model from various formats
+
+## Examples
+
+### Linear Regression with Diagnostics
+
+```r
+# Load data
+data(mtcars)
+
+# Create linear model
+linear_model <- tl_model(mtcars, mpg ~ wt + hp + am, method = "linear")
+
+# Check model assumptions
+assumptions <- tl_check_assumptions(linear_model)
+print(assumptions$overall$status)
+
+# Plot diagnostic dashboard
+tl_diagnostic_dashboard(linear_model)
+
+# Calculate influence measures
+influence <- tl_influence_measures(linear_model)
+head(influence[influence$is_influential, ])
+
+# Plot influential observations
+tl_plot_influence(linear_model, plot_type = "leverage")
+```
+
+### Model Comparison with Cross-Validation
+
+```r
+# Load data
+data(mtcars)
+
+# Create models
+linear_model <- tl_model(mtcars, mpg ~ wt + hp + am, method = "linear")
+lasso_model <- tl_model(mtcars, mpg ~ ., method = "lasso")
+forest_model <- tl_model(mtcars, mpg ~ ., method = "forest", ntree = 500)
+
+# Compare with cross-validation
+cv_results <- tl_compare_cv(
+  data = mtcars,
+  models = list(linear = linear_model, lasso = lasso_model, forest = forest_model),
+  folds = 5,
+  metrics = c("rmse", "mae", "rsq")
+)
+
+# Plot comparison
+tl_plot_cv_comparison(cv_results)
+
+# Statistically test differences
+test_results <- tl_test_model_difference(
+  cv_results,
+  baseline_model = "linear",
+  metric = "rmse"
+)
+print(test_results)
+```
+
+### Classification with XGBoost
+
+```r
+# Load data
+data(iris)
+
+# Train XGBoost model
+xgb_model <- tl_model(
+  iris, 
+  Species ~ ., 
+  method = "xgboost",
+  nrounds = 100,
+  max_depth = 3,
+  eta = 0.1
+)
+
+# Evaluate model
+metrics <- tl_evaluate(xgb_model, metrics = c("accuracy", "precision", "recall", "f1"))
+print(metrics)
 
 # Plot feature importance
-tl_plot_importance(forest_model)
+tl_plot_xgboost_importance(xgb_model)
 
-# Make predictions
-predictions <- predict(forest_model, test_data)
+# Calculate and plot SHAP values
+tl_plot_xgboost_shap_summary(xgb_model)
+
+# Plot SHAP dependence for a specific feature
+tl_plot_xgboost_shap_dependence(xgb_model, feature = "Petal.Width")
 ```
 
-### Classification Example
+### End-to-End Pipeline with Multiple Models
 
 ```r
-library(tidylearn)
-library(tidyverse)
-library(modeldata)
-
 # Load data
-data(credit_data)
-credit_df <- as_tibble(credit_data)
-credit_df$Status <- factor(credit_df$Status)
+data(mtcars)
 
-# Split data
-set.seed(123)
-train_indices <- sample(1:nrow(credit_df), 0.8 * nrow(credit_df))
-train_data <- credit_df[train_indices, ]
-test_data <- credit_df[-train_indices, ]
-
-# Train a model
-log_model <- tl_model(
-  data = train_data,
-  formula = Status ~ .,
-  method = "logistic"
+# Create and run pipeline
+pipeline <- tl_pipeline(
+  data = mtcars,
+  formula = mpg ~ .,
+  preprocessing = list(
+    impute_missing = TRUE,
+    standardize = TRUE,
+    dummy_encode = TRUE
+  ),
+  models = list(
+    linear = list(method = "linear"),
+    lasso = list(method = "lasso"),
+    ridge = list(method = "ridge"),
+    tree = list(method = "tree"),
+    forest = list(method = "forest", ntree = 500)
+  ),
+  evaluation = list(
+    metrics = c("rmse", "mae", "rsq"),
+    validation = "cv",
+    cv_folds = 5,
+    best_metric = "rmse"
+  )
 )
 
-# Evaluate the model
-tl_evaluate(log_model, test_data)
+results <- tl_run_pipeline(pipeline)
 
-# Plot ROC curve
-tl_plot_roc(log_model, test_data)
+# Visualize model comparison
+tl_compare_pipeline_models(results)
 
-# Make predictions
-class_predictions <- predict(log_model, test_data, type = "class")
-prob_predictions <- predict(log_model, test_data, type = "prob")
+# Get best model
+best_model <- tl_get_best_model(results)
+summary(best_model)
+
+# Make predictions with the pipeline
+new_data <- mtcars[1:5, ]
+predictions <- tl_predict_pipeline(results, new_data)
+print(predictions)
+
+# Save the pipeline
+tl_save_pipeline(results, "my_pipeline.rds")
 ```
-
-## Supported Methods
-
-### Regression
-- Linear Regression
-- Polynomial Regression
-- Ridge Regression
-- Lasso Regression
-- Elastic Net
-- Decision Trees
-- Random Forests
-- Gradient Boosting
-- Support Vector Regression
-- Neural Networks
-- Deep Learning
-
-### Classification
-- Logistic Regression
-- Decision Trees
-- Random Forests
-- Gradient Boosting
-- Support Vector Machines
-- Neural Networks
-- Deep Learning
-
-## Key Functions
-
-| Function | Description |
-|----------|-------------|
-| `tl_model()` | Train a supervised learning model |
-| `predict()` | Make predictions using a trained model |
-| `tl_evaluate()` | Evaluate model performance |
-| `tl_cv()` | Perform cross-validation |
-| `tl_plot_*()` | Various plotting functions |
-| `tl_dashboard()` | Launch interactive model dashboard |
 
 ## Documentation
 
-For detailed documentation, examples, and vignettes, please visit [https://username.github.io/tidylearn/](https://username.github.io/tidylearn/).
+For detailed documentation, examples, and vignettes, please visit [https://ces0491.github.io/tidylearn/](https://ces0491.github.io/tidylearn/).
 
 ## Contributing
 
@@ -165,10 +287,9 @@ tidylearn integrates with several excellent machine learning packages:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This package is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
 - The tidyverse team for their elegant approach to data science in R
 - Authors of the various machine learning packages that tidylearn builds upon
-- The R community for their continued support and contributions

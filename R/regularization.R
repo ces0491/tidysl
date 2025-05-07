@@ -1,4 +1,5 @@
 #' @title Regularization Functions for tidylearn
+#' @name tidylearn-regularization
 #' @description Ridge, Lasso, and Elastic Net regularization functionality
 #' @importFrom glmnet glmnet cv.glmnet predict.glmnet
 #' @importFrom stats model.matrix as.formula

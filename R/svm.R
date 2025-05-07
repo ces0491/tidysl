@@ -1,6 +1,8 @@
 #' @title Support Vector Machines for tidylearn
+#' @name tidylearn-svm
 #' @description SVM functionality for classification and regression
-#' @importFrom e1071 svm tune predict.svm
+#' @importFrom e1071 svm tune
+#' @importFrom stats predict
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr %>% mutate
 NULL

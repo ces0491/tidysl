@@ -1,7 +1,9 @@
 #' @title Tree-based Methods for tidylearn
+#' @name tidylearn-trees
 #' @description Decision trees, random forests, and boosting functionality
-#' @importFrom rpart rpart rpart.control predict.rpart
-#' @importFrom randomForest randomForest importance predict.randomForest
+#' @importFrom rpart rpart rpart.control
+#' @importFrom stats predict
+#' @importFrom randomForest randomForest importance
 #' @importFrom gbm gbm predict.gbm
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr %>% mutate arrange desc

@@ -1,4 +1,5 @@
 #' @title Visualization Functions for tidylearn
+#' @name tidylearn-visualization
 #' @description General visualization functions for tidylearn models
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_bar geom_boxplot
 #' @importFrom ggplot2 geom_histogram geom_density geom_jitter scale_color_gradient

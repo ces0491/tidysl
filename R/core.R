@@ -1,4 +1,5 @@
 #' @title tidylearn: A Tidy Approach to Supervised Learning
+#' @name tidylearn-core
 #' @description Core functionality for the tidylearn package
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data .env
@@ -7,6 +8,18 @@
 #' @importFrom purrr map map_dbl map_lgl map2
 #' @importFrom tidyr nest unnest
 #' @importFrom stats predict model.matrix formula as.formula
+NULL
+
+#' Pipe operator
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+#' @return The result of applying rhs to lhs.
+#' @description See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 NULL
 
 #' @export

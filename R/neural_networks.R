@@ -1,6 +1,8 @@
 #' @title Neural Networks for tidylearn
+#' @name tidylearn-neural-networks
 #' @description Neural network functionality for classification and regression
-#' @importFrom nnet nnet predict.nnet
+#' @importFrom nnet nnet
+#' @importFrom stats predict
 #' @importFrom stats model.matrix as.formula
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr %>% mutate
