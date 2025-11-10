@@ -111,8 +111,8 @@ test_that("tl_auto_interactions finds important interactions", {
   # Find important interactions
   model <- tl_auto_interactions(mtcars, mpg ~ hp + wt + cyl + disp, top_n = 2)
 
-  # Check if result is a tidylearn model
-  expect_s3_class(model, "tidylearn_model")
+  # Check if result is a tidysl model
+  expect_s3_class(model, "tidysl_model")
 
   # Check if interaction tests are stored
   expect_true(!is.null(attr(model, "interaction_tests")))
@@ -134,7 +134,7 @@ test_that("tl_auto_interactions finds important interactions", {
 
   # May not find any significant interactions with strict criteria
   # In that case, should return a model without interactions
-  expect_s3_class(model2, "tidylearn_model")
+  expect_s3_class(model2, "tidysl_model")
 
   # Test with excluded variables
   model3 <- tl_auto_interactions(mtcars, mpg ~ hp + wt + cyl + disp,

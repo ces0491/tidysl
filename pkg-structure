@@ -1,4 +1,4 @@
-tidylearn/
+tidysl/
 ├── R/
 │   ├── core.R                  # Core functionality and shared utilities
 │   ├── regression.R            # Linear, polynomial regression functions
@@ -57,4 +57,4 @@ tidylearn/
 ├── DESCRIPTION                 # Update with new dependencies
 ├── NAMESPACE                   # Updated with new exports
 ├── README.md                   # Updated with new functionality
-└── tidylearn-cheatsheet.qmd    # Updated cheat sheet
+└── tidysl-cheatsheet.qmd    # Updated cheat sheet

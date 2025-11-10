@@ -1,5 +1,5 @@
-#' @title Advanced Diagnostics Functions for tidylearn
-#' @name tidylearn-diagnostics
+#' @title Advanced Diagnostics Functions for tidysl
+#' @name tidysl-diagnostics
 #' @description Functions for advanced model diagnostics, assumption checking, and outlier detection
 #' @importFrom stats influence.measures cooks.distance hatvalues dffits dfbetas
 #' @importFrom stats lm.influence rstudent rstandard
@@ -10,7 +10,7 @@ NULL
 
 #' Calculate influence measures for a linear model
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param threshold_cook Cook's distance threshold (default: 4/n)
 #' @param threshold_leverage Leverage threshold (default: 2*(p+1)/n)
 #' @param threshold_dffits DFFITS threshold (default: 2*sqrt((p+1)/n))
@@ -20,7 +20,7 @@ tl_influence_measures <- function(model, threshold_cook = NULL,
                                   threshold_leverage = NULL,
                                   threshold_dffits = NULL) {
   # Check if model is supported
-  if (!inherits(model, "tidylearn_model") ||
+  if (!inherits(model, "tidysl_model") ||
       !model$spec$method %in% c("linear", "logistic", "polynomial", "ridge", "lasso", "elastic_net")) {
     stop("Influence measures are only available for linear-based models", call. = FALSE)
   }
@@ -86,7 +86,7 @@ tl_influence_measures <- function(model, threshold_cook = NULL,
 
 #' Plot influence diagnostics
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param plot_type Type of influence plot: "cook", "leverage", "index"
 #' @param threshold_cook Cook's distance threshold (default: 4/n)
 #' @param threshold_leverage Leverage threshold (default: 2*(p+1)/n)
@@ -158,7 +158,7 @@ tl_plot_influence <- function(model, plot_type = "cook", threshold_cook = NULL,
         title = "Leverage-Residual Plot",
         subtitle = paste(
           "Leverage threshold:", round(threshold_leverage, 4),
-          "- Residual threshold: ±3"
+          "- Residual threshold: \u00b13"
         ),
         x = "Leverage (Hat Values)",
         y = "Standardized Residuals",
@@ -181,7 +181,7 @@ tl_plot_influence <- function(model, plot_type = "cook", threshold_cook = NULL,
       ggplot2::scale_color_manual(values = c("blue", "red")) +
       ggplot2::labs(
         title = "Index Plot of Standardized Residuals",
-        subtitle = "Points outside ±3 are considered outliers",
+        subtitle = "Points outside \u00b13 are considered outliers",
         x = "Observation Index",
         y = "Standardized Residuals",
         color = "Outlier"
@@ -196,14 +196,14 @@ tl_plot_influence <- function(model, plot_type = "cook", threshold_cook = NULL,
 
 #' Check model assumptions
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param test Logical; whether to perform statistical tests
 #' @param verbose Logical; whether to print test results and explanations
 #' @return A list with assumption check results
 #' @export
 tl_check_assumptions <- function(model, test = TRUE, verbose = TRUE) {
   # Check if model is supported
-  if (!inherits(model, "tidylearn_model") ||
+  if (!inherits(model, "tidysl_model") ||
       !model$spec$method %in% c("linear", "logistic", "polynomial", "ridge", "lasso", "elastic_net")) {
     stop("Assumption checking is only available for linear-based models", call. = FALSE)
   }
@@ -484,7 +484,7 @@ tl_check_assumptions <- function(model, test = TRUE, verbose = TRUE) {
 
 #' Create a comprehensive diagnostic dashboard
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param include_influence Logical; whether to include influence diagnostics
 #' @param include_assumptions Logical; whether to include assumption checks
 #' @param include_performance Logical; whether to include performance metrics

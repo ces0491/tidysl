@@ -1,6 +1,6 @@
-#' @title Visualization Functions for tidylearn
-#' @name tidylearn-visualization
-#' @description General visualization functions for tidylearn models
+#' @title Visualization Functions for tidysl
+#' @name tidysl-visualization
+#' @description General visualization functions for tidysl models
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_bar geom_boxplot
 #' @importFrom ggplot2 geom_histogram geom_density geom_jitter scale_color_gradient
 #' @importFrom ggplot2 labs theme_minimal
@@ -10,7 +10,7 @@ NULL
 
 #' Plot feature importance across multiple models
 #'
-#' @param ... tidylearn model objects to compare
+#' @param ... tidysl model objects to compare
 #' @param top_n Number of top features to display (default: 10)
 #' @param names Optional character vector of model names
 #' @return A ggplot object with feature importance comparison
@@ -85,7 +85,7 @@ tl_plot_importance_comparison <- function(..., top_n = 10, names = NULL) {
 
 #' Extract importance from a tree-based model
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @return A data frame with feature importance values
 #' @keywords internal
 tl_extract_importance <- function(model) {
@@ -145,7 +145,7 @@ tl_extract_importance <- function(model) {
 
 #' Extract importance from a regularized regression model
 #'
-#' @param model A tidylearn regularized model object
+#' @param model A tidysl regularized model object
 #' @param lambda Which lambda to use ("1se" or "min", default: "1se")
 #' @return A data frame with feature importance values
 #' @keywords internal
@@ -187,7 +187,7 @@ tl_extract_importance_regularized <- function(model, lambda = "1se") {
 
 #' Plot model comparison
 #'
-#' @param ... tidylearn model objects to compare
+#' @param ... tidysl model objects to compare
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param metrics Character vector of metrics to compute
 #' @param names Optional character vector of model names
@@ -294,7 +294,7 @@ tl_plot_cv_results <- function(cv_results, metrics = NULL) {
 
 #' Create interactive visualization dashboard for a model
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param ... Additional arguments
 #' @return A Shiny app object
@@ -309,7 +309,7 @@ tl_dashboard <- function(model, new_data = NULL, ...) {
 
   # Define UI
   ui <- shinydashboard::dashboardPage(
-    shinydashboard::dashboardHeader(title = "tidylearn Model Dashboard"),
+    shinydashboard::dashboardHeader(title = "tidysl Model Dashboard"),
 
     shinydashboard::dashboardSidebar(
       shinydashboard::sidebarMenu(
@@ -548,7 +548,7 @@ tl_dashboard <- function(model, new_data = NULL, ...) {
 
 #' Plot lift chart for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param bins Number of bins for grouping predictions (default: 10)
 #' @param ... Additional arguments
@@ -655,7 +655,7 @@ tl_plot_lift <- function(model, new_data = NULL, bins = 10, ...) {
 
 #' Plot gain chart for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param bins Number of bins for grouping predictions (default: 10)
 #' @param ... Additional arguments

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(tidylearn)
+library(tidysl)
 
-test_check("tidylearn")
+test_check("tidysl")

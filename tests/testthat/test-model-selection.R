@@ -7,9 +7,9 @@ test_that("tl_step_selection performs stepwise selection", {
   # Test with backward selection
   model <- tl_step_selection(mtcars, mpg ~ ., direction = "backward")
 
-  # Check if result is a tidylearn model
-  expect_s3_class(model, "tidylearn_model")
-  expect_s3_class(model, "tidylearn_linear")
+  # Check if result is a tidysl model
+  expect_s3_class(model, "tidysl_model")
+  expect_s3_class(model, "tidysl_linear")
 
   # Check if formula has been updated from the original
   expect_false(identical(formula(model$fit), mpg ~ .))
@@ -22,8 +22,8 @@ test_that("tl_step_selection performs stepwise selection", {
   model_forward <- tl_step_selection(mtcars, mpg ~ 1, direction = "forward",
                                      scope = mpg ~ cyl + disp + hp + wt)
 
-  # Check if result is a tidylearn model
-  expect_s3_class(model_forward, "tidylearn_model")
+  # Check if result is a tidysl model
+  expect_s3_class(model_forward, "tidysl_model")
 
   # Check selection details
   expect_equal(model_forward$spec$selection$direction, "forward")

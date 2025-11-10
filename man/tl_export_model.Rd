@@ -2,12 +2,12 @@
 % Please edit documentation in R/integration.R
 \name{tl_export_model}
 \alias{tl_export_model}
-\title{Export a tidylearn model to an external format}
+\title{Export a tidysl model to an external format}
 \usage{
 tl_export_model(model, format = "rds", file = NULL, ...)
 }
 \arguments{
-\item{model}{A tidylearn model object}
+\item{model}{A tidysl model object}
 
 \item{format}{Export format: "rds", "onnx", "pmml", "json"}
 
@@ -19,5 +19,5 @@ tl_export_model(model, format = "rds", file = NULL, ...)
 The exported model or NULL if saved to file
 }
 \description{
-Export a tidylearn model to an external format
+Export a tidysl model to an external format
 }

@@ -58,7 +58,7 @@ test_that("tl_predict_svm correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_svm", "tidylearn_model")
+  class(model_reg) <- c("tidysl_svm", "tidysl_model")
 
   # Test response predictions for regression
   preds_reg <- tl_predict_svm(model_reg, mtcars[1:5, ])
@@ -82,7 +82,7 @@ test_that("tl_predict_svm correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_svm", "tidylearn_model")
+  class(model_class) <- c("tidysl_svm", "tidysl_model")
 
   # Mock the predict.svm function to avoid errors in testing
   mockery::stub(tl_predict_svm, "e1071::predict.svm", function(object, newdata, probability, ...) {
@@ -137,7 +137,7 @@ test_that("tl_plot_svm_boundary creates decision boundary plots", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_svm", "tidylearn_model")
+  class(model_class) <- c("tidysl_svm", "tidysl_model")
 
   # Mock the predict.svm function to avoid errors in testing
   mockery::stub(tl_plot_svm_boundary, "e1071::predict.svm", function(...) {
@@ -182,7 +182,7 @@ test_that("tl_plot_svm_tuning creates tuning plots", {
     fit = fit_class,
     data = iris
   )
-  class(model_class) <- c("tidylearn_svm", "tidylearn_model")
+  class(model_class) <- c("tidysl_svm", "tidysl_model")
 
   # Test plot creation
   p <- tl_plot_svm_tuning(model_class)
@@ -237,7 +237,7 @@ test_that("tl_predict_nn correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_nn", "tidylearn_model")
+  class(model_reg) <- c("tidysl_nn", "tidysl_model")
 
   # Mock the predict.nnet function to avoid errors in testing
   mockery::stub(tl_predict_nn, "nnet::predict.nnet", function(...) {
@@ -267,7 +267,7 @@ test_that("tl_predict_nn correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_nn", "tidylearn_model")
+  class(model_class) <- c("tidysl_nn", "tidysl_model")
 
   # Mock the predict.nnet function to avoid errors in testing for classification
   mockery::stub(tl_predict_nn, "nnet::predict.nnet", function(object, newdata, type, ...) {
@@ -309,7 +309,7 @@ test_that("tl_plot_nn_architecture creates architecture plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_nn", "tidylearn_model")
+  class(model) <- c("tidysl_nn", "tidysl_model")
 
   # Mock the NeuralNetTools::plotnet function to avoid errors in testing
   mockery::stub(tl_plot_nn_architecture, "NeuralNetTools::plotnet", function(...) TRUE)

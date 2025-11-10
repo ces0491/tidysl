@@ -1,10 +1,10 @@
-# tidylearn: Insurance Cost Analysis Example
+# tidysl: Insurance Cost Analysis Example
 # ===========================================
-# This example demonstrates how to use the tidylearn package to analyze
+# This example demonstrates how to use the tidysl package to analyze
 # the medical insurance cost dataset from the assignments.
 
 # Load required libraries
-library(tidylearn)
+library(tidysl)
 library(dplyr)
 library(ggplot2)
 

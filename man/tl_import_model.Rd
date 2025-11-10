@@ -2,7 +2,7 @@
 % Please edit documentation in R/integration.R
 \name{tl_import_model}
 \alias{tl_import_model}
-\title{Import a tidylearn model from an external format}
+\title{Import a tidysl model from an external format}
 \usage{
 tl_import_model(file, format = "rds", ...)
 }
@@ -14,8 +14,8 @@ tl_import_model(file, format = "rds", ...)
 \item{...}{Additional arguments for the specific import format}
 }
 \value{
-A tidylearn model object
+A tidysl model object
 }
 \description{
-Import a tidylearn model from an external format
+Import a tidysl model from an external format
 }

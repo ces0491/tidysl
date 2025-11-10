@@ -15,7 +15,7 @@ tl_plot_interaction(
 )
 }
 \arguments{
-\item{model}{A tidylearn model object}
+\item{model}{A tidysl model object}
 
 \item{var1}{First variable in the interaction}
 

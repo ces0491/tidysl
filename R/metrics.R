@@ -1,5 +1,5 @@
-#' @title Metrics Functionality for tidylearn
-#' @name tidylearn-metrics
+#' @title Metrics Functionality for tidysl
+#' @name tidysl-metrics
 #' @description Functions for calculating model evaluation metrics
 #' @importFrom yardstick accuracy precision recall f_meas rmse rsq mae mape roc_auc pr_auc
 #' @importFrom ROCR prediction performance
@@ -197,4 +197,59 @@ tl_evaluate_thresholds <- function(actuals, probs, thresholds, pos_class) {
   })
 
   return(threshold_results)
+}
+
+#' Calculate regression metrics
+#'
+#' @param actuals Actual values (ground truth)
+#' @param predicted Predicted values
+#' @param metrics Character vector of metrics to compute
+#' @param ... Additional arguments
+#' @return A tibble of evaluation metrics
+#' @keywords internal
+tl_calc_regression_metrics <- function(actuals, predicted,
+                                        metrics = c("rmse", "mae", "rsq", "mape"), ...) {
+  # Create a results data frame
+  results <- tibble::tibble(metric = character(), value = numeric())
+
+  # Ensure both are numeric vectors
+  actuals <- as.numeric(actuals)
+  predicted <- as.numeric(predicted)
+
+  # Remove any NA values
+  valid_idx <- !is.na(actuals) & !is.na(predicted)
+  actuals <- actuals[valid_idx]
+  predicted <- predicted[valid_idx]
+
+  # Calculate RMSE
+  if ("rmse" %in% metrics) {
+    rmse_val <- sqrt(mean((actuals - predicted)^2))
+    results <- dplyr::add_row(results, metric = "rmse", value = rmse_val)
+  }
+
+  # Calculate MAE
+  if ("mae" %in% metrics) {
+    mae_val <- mean(abs(actuals - predicted))
+    results <- dplyr::add_row(results, metric = "mae", value = mae_val)
+  }
+
+  # Calculate R-squared
+  if ("rsq" %in% metrics || "r2" %in% metrics) {
+    ss_res <- sum((actuals - predicted)^2)
+    ss_tot <- sum((actuals - mean(actuals))^2)
+    rsq_val <- 1 - (ss_res / ss_tot)
+    results <- dplyr::add_row(results, metric = "rsq", value = rsq_val)
+  }
+
+  # Calculate MAPE
+  if ("mape" %in% metrics) {
+    # Avoid division by zero
+    non_zero <- actuals != 0
+    if (sum(non_zero) > 0) {
+      mape_val <- mean(abs((actuals[non_zero] - predicted[non_zero]) / actuals[non_zero])) * 100
+      results <- dplyr::add_row(results, metric = "mape", value = mape_val)
+    }
+  }
+
+  return(results)
 }

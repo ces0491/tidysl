@@ -1,10 +1,10 @@
 ---
-title: "Classification with tidylearn"
-author: "tidylearn Team"
+title: "Classification with tidysl"
+author: "tidysl Team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Classification with tidylearn}
+  %\VignetteIndexEntry{Classification with tidysl}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This vignette demonstrates how to use the `tidylearn` package for classification tasks. The `tidylearn` package provides a consistent interface for various supervised learning methods following tidyverse principles.
+This vignette demonstrates how to use the `tidysl` package for classification tasks. The `tidysl` package provides a consistent interface for various supervised learning methods following tidyverse principles.
 
 ## Setup
 
 First, let's load the necessary packages:
 
 ```{r packages, message=FALSE, warning=FALSE}
-library(tidylearn)
+library(tidysl)
 library(tidyverse)
 library(modeldata)  # For example datasets
 ```
@@ -82,7 +82,7 @@ log_eval
 
 ## Model Visualization
 
-`tidylearn` provides various visualization functions for classification:
+`tidysl` provides various visualization functions for classification:
 
 ```{r visualization}
 # Plot ROC curve
@@ -261,7 +261,7 @@ tl_plot_cv_results(log_cv)
 
 ## Advanced Evaluation Metrics
 
-`tidylearn` provides additional evaluation plots for classification:
+`tidysl` provides additional evaluation plots for classification:
 
 ```{r advanced-metrics}
 # Lift chart
@@ -320,7 +320,7 @@ if (requireNamespace("nnet", quietly = TRUE)) {
 
 ## Model Dashboard
 
-`tidylearn` provides an interactive dashboard for exploring model performance:
+`tidysl` provides an interactive dashboard for exploring model performance:
 
 ```{r dashboard, eval=FALSE}
 # Launch dashboard (only run interactively)
@@ -333,7 +333,7 @@ if (requireNamespace("shiny", quietly = TRUE) &&
 
 ## Conclusion
 
-This vignette demonstrated how to use the `tidylearn` package for classification tasks. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
+This vignette demonstrated how to use the `tidysl` package for classification tasks. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
 
 Key features:
 - Simple, consistent API across different models

@@ -2,7 +2,7 @@
 % Please edit documentation in R/core.R
 \name{tl_cv}
 \alias{tl_cv}
-\title{Cross-validate a tidylearn model}
+\title{Cross-validate a tidysl model}
 \usage{
 tl_cv(data, formula, method = "linear", folds = 5, metrics = NULL, ...)
 }
@@ -23,5 +23,5 @@ tl_cv(data, formula, method = "linear", folds = 5, metrics = NULL, ...)
 A tibble with cross-validation results
 }
 \description{
-Cross-validate a tidylearn model
+Cross-validate a tidysl model
 }

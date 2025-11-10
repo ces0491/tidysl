@@ -181,7 +181,7 @@ def linear_model_to_onnx(coefficients, is_classification=False,
     model_name = 'logistic_regression' if is_classification else 'linear_regression'
     onnx_model = helper.make_model(
         graph, 
-        producer_name='tidylearn',
+        producer_name='tidysl',
         opset_imports=[helper.make_opsetid('', 12)]
     )
     

@@ -47,7 +47,7 @@ test_that("tl_predict_tree correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_tree", "tidylearn_model")
+  class(model_reg) <- c("tidysl_tree", "tidysl_model")
 
   # Test response predictions for regression
   preds_reg <- tl_predict_tree(model_reg, mtcars[1:5, ])
@@ -70,7 +70,7 @@ test_that("tl_predict_tree correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_tree", "tidylearn_model")
+  class(model_class) <- c("tidysl_tree", "tidysl_model")
 
   # Test probability predictions for classification
   probs <- tl_predict_tree(model_class, iris_sub[1:5, ], type = "prob")
@@ -128,7 +128,7 @@ test_that("tl_predict_forest correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_forest", "tidylearn_model")
+  class(model_reg) <- c("tidysl_forest", "tidysl_model")
 
   # Test response predictions for regression
   preds_reg <- tl_predict_forest(model_reg, mtcars[1:5, ])
@@ -151,7 +151,7 @@ test_that("tl_predict_forest correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_forest", "tidylearn_model")
+  class(model_class) <- c("tidysl_forest", "tidysl_model")
 
   # Test probability predictions for classification
   probs <- tl_predict_forest(model_class, iris_sub[1:5, ], type = "prob")
@@ -211,7 +211,7 @@ test_that("tl_predict_boost correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_boost", "tidylearn_model")
+  class(model_reg) <- c("tidysl_boost", "tidysl_model")
 
   # Test response predictions for regression
   preds_reg <- tl_predict_boost(model_reg, mtcars[1:5, ])
@@ -236,7 +236,7 @@ test_that("tl_predict_boost correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_boost", "tidylearn_model")
+  class(model_class) <- c("tidysl_boost", "tidysl_model")
 
   # Test probability predictions for classification
   probs <- tl_predict_boost(model_class, iris_sub[1:5, ], type = "prob")
@@ -266,7 +266,7 @@ test_that("tl_plot_tree creates tree plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_tree", "tidylearn_model")
+  class(model) <- c("tidysl_tree", "tidysl_model")
 
   # Stub the rpart.plot function to verify it's called
   mockery::stub(tl_plot_tree, "rpart.plot::rpart.plot", function(...) TRUE)
@@ -294,7 +294,7 @@ test_that("tl_plot_importance creates importance plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_forest", "tidylearn_model")
+  class(model) <- c("tidysl_forest", "tidysl_model")
 
   # Mock the importance function to avoid errors in testing
   mockery::stub(tl_plot_importance, "randomForest::importance", function(...) {
@@ -324,7 +324,7 @@ test_that("tl_plot_partial_dependence creates partial dependence plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_forest", "tidylearn_model")
+  class(model) <- c("tidysl_forest", "tidysl_model")
 
   # Mock the predict function to avoid errors in testing
   mockery::stub(tl_plot_partial_dependence, "predict", function(...) {

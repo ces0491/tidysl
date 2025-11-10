@@ -7,8 +7,8 @@ test_that("tl_model can fit a linear regression model", {
   model <- tl_model(mtcars, mpg ~ hp + wt, method = "linear")
 
   # Check if model is created with the right class
-  expect_s3_class(model, "tidylearn_model")
-  expect_s3_class(model, "tidylearn_linear")
+  expect_s3_class(model, "tidysl_model")
+  expect_s3_class(model, "tidysl_linear")
 
   # Check if model specification is correct
   expect_equal(model$spec$method, "linear")
@@ -32,8 +32,8 @@ test_that("tl_model can fit a logistic regression model", {
   model <- tl_model(mtcars_binary, am ~ hp + wt, method = "logistic")
 
   # Check if model is created with the right class
-  expect_s3_class(model, "tidylearn_model")
-  expect_s3_class(model, "tidylearn_logistic")
+  expect_s3_class(model, "tidysl_model")
+  expect_s3_class(model, "tidysl_logistic")
 
   # Check if model specification is correct
   expect_equal(model$spec$method, "logistic")
@@ -103,7 +103,7 @@ test_that("tl_cv can perform cross-validation", {
   expect_true("mean_value" %in% names(cv_results$summary))
 })
 
-test_that("plot.tidylearn_model produces appropriate plots", {
+test_that("plot.tidysl_model produces appropriate plots", {
   # Skip if ggplot2 not installed
   skip_if_not_installed("ggplot2")
 

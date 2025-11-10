@@ -1,5 +1,5 @@
-#' @title Support Vector Machines for tidylearn
-#' @name tidylearn-svm
+#' @title Support Vector Machines for tidysl
+#' @name tidysl-svm
 #' @description SVM functionality for classification and regression
 #' @importFrom e1071 svm tune
 #' @importFrom stats predict
@@ -102,7 +102,7 @@ tl_fit_svm <- function(data, formula, is_classification = FALSE,
 
 #' Predict using a support vector machine model
 #'
-#' @param model A tidylearn SVM model object
+#' @param model A tidysl SVM model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "response" (default), "prob" (for classification)
 #' @param ... Additional arguments
@@ -122,7 +122,7 @@ tl_predict_svm <- function(model, new_data, type = "response", ...) {
 
       # Get class probabilities
       probs <- attr(
-        e1071::predict.svm(fit, newdata = new_data, probability = TRUE, ...),
+        predict(fit, newdata = new_data, probability = TRUE, ...),
         "probabilities"
       )
 
@@ -134,21 +134,21 @@ tl_predict_svm <- function(model, new_data, type = "response", ...) {
       return(tibble::as_tibble(prob_df))
     } else if (type == "class" || type == "response") {
       # Get predicted classes
-      preds <- e1071::predict.svm(fit, newdata = new_data, ...)
+      preds <- predict(fit, newdata = new_data, ...)
       return(preds)
     } else {
       stop("Invalid prediction type for SVM classification. Use 'prob', 'class', or 'response'.", call. = FALSE)
     }
   } else {
     # Regression predictions
-    preds <- e1071::predict.svm(fit, newdata = new_data, ...)
+    preds <- predict(fit, newdata = new_data, ...)
     return(preds)
   }
 }
 
 #' Plot SVM decision boundary
 #'
-#' @param model A tidylearn SVM model object
+#' @param model A tidysl SVM model object
 #' @param x_var Name of the x-axis variable
 #' @param y_var Name of the y-axis variable
 #' @param grid_size Number of points in each dimension for the grid (default: 100)
@@ -213,7 +213,7 @@ tl_plot_svm_boundary <- function(model, x_var = NULL, y_var = NULL, grid_size = 
     if (model$fit$probability) {
       # Use probabilities
       probs <- attr(
-        e1071::predict.svm(model$fit, newdata = grid_data, probability = TRUE),
+        predict(model$fit, newdata = grid_data, probability = TRUE),
         "probabilities"
       )
 
@@ -223,13 +223,13 @@ tl_plot_svm_boundary <- function(model, x_var = NULL, y_var = NULL, grid_size = 
         grid_data$pred <- probs[, pos_class]
       } else {
         # For multiclass, use predicted class
-        preds <- e1071::predict.svm(model$fit, newdata = grid_data)
+        preds <- predict(model$fit, newdata = grid_data)
         grid_data$pred <- as.integer(preds)
       }
     } else {
       # Use decision values
       decision_values <- attr(
-        e1071::predict.svm(model$fit, newdata = grid_data, decision.values = TRUE),
+        predict(model$fit, newdata = grid_data, decision.values = TRUE),
         "decision.values"
       )
 
@@ -238,13 +238,13 @@ tl_plot_svm_boundary <- function(model, x_var = NULL, y_var = NULL, grid_size = 
         grid_data$pred <- decision_values
       } else {
         # For multiclass, use predicted class
-        preds <- e1071::predict.svm(model$fit, newdata = grid_data)
+        preds <- predict(model$fit, newdata = grid_data)
         grid_data$pred <- as.integer(preds)
       }
     }
   } else {
     # For regression, use predicted values
-    preds <- e1071::predict.svm(model$fit, newdata = grid_data)
+    preds <- predict(model$fit, newdata = grid_data)
     grid_data$pred <- preds
   }
 
@@ -285,7 +285,7 @@ tl_plot_svm_boundary <- function(model, x_var = NULL, y_var = NULL, grid_size = 
 
 #' Plot SVM tuning results
 #'
-#' @param model A tidylearn SVM model object
+#' @param model A tidysl SVM model object
 #' @param ... Additional arguments
 #' @return A ggplot object with tuning results
 #' @importFrom ggplot2 ggplot aes geom_tile scale_fill_gradient2 labs theme_minimal

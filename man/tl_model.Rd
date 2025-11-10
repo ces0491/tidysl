@@ -2,7 +2,7 @@
 % Please edit documentation in R/core.R
 \name{tl_model}
 \alias{tl_model}
-\title{Create a tidylearn model}
+\title{Create a tidysl model}
 \usage{
 tl_model(data, formula, method = "linear", ...)
 }
@@ -16,8 +16,8 @@ tl_model(data, formula, method = "linear", ...)
 \item{...}{Additional arguments to pass to the underlying model function}
 }
 \value{
-A tidylearn model object
+A tidysl model object
 }
 \description{
-Create a tidylearn model
+Create a tidysl model
 }

@@ -30,7 +30,7 @@ test_that("tl_predict_linear correctly predicts with different types", {
     fit = lm(mpg ~ hp + wt, data = mtcars),
     data = mtcars
   )
-  class(model) <- c("tidylearn_linear", "tidylearn_model")
+  class(model) <- c("tidysl_linear", "tidysl_model")
 
   # Test response predictions
   preds <- tl_predict_linear(model, mtcars[1:5, ], type = "response")
@@ -77,7 +77,7 @@ test_that("tl_predict_polynomial correctly predicts", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_polynomial", "tidylearn_model")
+  class(model) <- c("tidysl_polynomial", "tidysl_model")
 
   # Test predictions
   preds <- tl_predict_polynomial(model, mtcars[1:5, ])
@@ -100,7 +100,7 @@ test_that("tl_plot_diagnostics creates diagnostic plots", {
     fit = lm(mpg ~ hp + wt, data = mtcars),
     data = mtcars
   )
-  class(model) <- c("tidylearn_linear", "tidylearn_model")
+  class(model) <- c("tidysl_linear", "tidysl_model")
 
   # Test single plot
   p1 <- tl_plot_diagnostics(model, which = 1)
@@ -128,7 +128,7 @@ test_that("tl_plot_actual_predicted creates comparison plots", {
     fit = lm(mpg ~ hp + wt, data = mtcars),
     data = mtcars
   )
-  class(model) <- c("tidylearn_linear", "tidylearn_model")
+  class(model) <- c("tidysl_linear", "tidysl_model")
 
   # Test plot creation
   p <- tl_plot_actual_predicted(model)
@@ -150,7 +150,7 @@ test_that("tl_plot_residuals creates residual plots", {
     fit = lm(mpg ~ hp + wt, data = mtcars),
     data = mtcars
   )
-  class(model) <- c("tidylearn_linear", "tidylearn_model")
+  class(model) <- c("tidysl_linear", "tidysl_model")
 
   # Test different plot types
   p1 <- tl_plot_residuals(model, type = "fitted")
@@ -178,7 +178,7 @@ test_that("tl_plot_intervals creates interval plots", {
     fit = lm(mpg ~ hp + wt, data = mtcars),
     data = mtcars
   )
-  class(model) <- c("tidylearn_linear", "tidylearn_model")
+  class(model) <- c("tidysl_linear", "tidysl_model")
 
   # Test plot creation with different confidence levels
   p1 <- tl_plot_intervals(model, level = 0.95)

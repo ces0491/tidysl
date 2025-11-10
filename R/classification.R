@@ -1,5 +1,5 @@
-#' @title Classification Functions for tidylearn
-#' @name tidylearn-classification
+#' @title Classification Functions for tidysl
+#' @name tidysl-classification
 #' @description Logistic regression and classification metrics functionality
 #' @importFrom stats glm predict binomial
 #' @importFrom tibble tibble as_tibble
@@ -31,7 +31,7 @@ tl_fit_logistic <- function(data, formula, ...) {
 
 #' Predict using a logistic regression model
 #'
-#' @param model A tidylearn logistic model object
+#' @param model A tidysl logistic model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "prob" (default), "class", "response"
 #' @param ... Additional arguments
@@ -93,7 +93,7 @@ tl_predict_logistic <- function(model, new_data, type = "prob", ...) {
 
 #' Plot ROC curve for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param ... Additional arguments
 #' @return A ggplot object with ROC curve
@@ -157,7 +157,7 @@ tl_plot_roc <- function(model, new_data = NULL, ...) {
 
 #' Plot confusion matrix for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param ... Additional arguments
 #' @return A ggplot object with confusion matrix
@@ -207,7 +207,7 @@ tl_plot_confusion <- function(model, new_data = NULL, ...) {
 
 #' Plot precision-recall curve for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param ... Additional arguments
 #' @return A ggplot object with precision-recall curve
@@ -274,7 +274,7 @@ tl_plot_precision_recall <- function(model, new_data = NULL, ...) {
 
 #' Plot calibration curve for a classification model
 #'
-#' @param model A tidylearn classification model object
+#' @param model A tidysl classification model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param bins Number of bins for grouping predictions (default: 10)
 #' @param ... Additional arguments

@@ -44,7 +44,7 @@ test_that("tl_predict_logistic correctly predicts with different types", {
     fit = fit,
     data = binary_data
   )
-  class(model) <- c("tidylearn_logistic", "tidylearn_model")
+  class(model) <- c("tidysl_logistic", "tidysl_model")
 
   # Test probability predictions
   probs <- tl_predict_logistic(model, binary_data[1:5, ], type = "prob")
@@ -85,7 +85,7 @@ test_that("tl_plot_roc creates ROC curve plots", {
     fit = fit,
     data = binary_data
   )
-  class(model) <- c("tidylearn_logistic", "tidylearn_model")
+  class(model) <- c("tidysl_logistic", "tidysl_model")
 
   # Test ROC plot creation
   p <- tl_plot_roc(model)
@@ -113,7 +113,7 @@ test_that("tl_plot_confusion creates confusion matrix plots", {
     fit = fit,
     data = binary_data
   )
-  class(model) <- c("tidylearn_logistic", "tidylearn_model")
+  class(model) <- c("tidysl_logistic", "tidysl_model")
 
   # Mock the predict function to avoid errors in testing
   mockery::stub(tl_plot_confusion, "predict", function(...) {
@@ -150,7 +150,7 @@ test_that("tl_plot_precision_recall creates PR curve plots", {
     fit = fit,
     data = binary_data
   )
-  class(model) <- c("tidylearn_logistic", "tidylearn_model")
+  class(model) <- c("tidysl_logistic", "tidysl_model")
 
   # Mock the predict function to avoid errors in testing
   mockery::stub(tl_plot_precision_recall, "predict", function(...) {
@@ -189,7 +189,7 @@ test_that("tl_plot_calibration creates calibration plots", {
     fit = fit,
     data = binary_data
   )
-  class(model) <- c("tidylearn_logistic", "tidylearn_model")
+  class(model) <- c("tidysl_logistic", "tidysl_model")
 
   # Mock the predict function to avoid errors in testing
   mockery::stub(tl_plot_calibration, "predict", function(...) {

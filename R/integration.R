@@ -1,22 +1,22 @@
-#' @title Integration Functions for tidylearn
-#' @name tidylearn-integration
+#' @title Integration Functions for tidysl
+#' @name tidysl-integration
 #' @description Functions for integrating with other R packages and ecosystems
 #' @importFrom stats as.formula
 #' @importFrom dplyr %>% select mutate
 NULL
 
-#' Convert a tidylearn model to a caret model
+#' Convert a tidysl model to a caret model
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @return A caret model object
 #' @export
 tl_to_caret <- function(model) {
   # Check if caret is installed
   tl_check_packages("caret")
 
-  # Check input is a tidylearn model
-  if (!inherits(model, "tidylearn_model")) {
-    stop("Input must be a tidylearn model object", call. = FALSE)
+  # Check input is a tidysl model
+  if (!inherits(model, "tidysl_model")) {
+    stop("Input must be a tidysl model object", call. = FALSE)
   }
 
   # Extract components needed for caret model
@@ -24,7 +24,7 @@ tl_to_caret <- function(model) {
   formula <- model$spec$formula
   method <- model$spec$method
 
-  # Map tidylearn methods to caret methods
+  # Map tidysl methods to caret methods
   caret_method <- switch(method,
                          "linear" = "lm",
                          "polynomial" = "lm",  # Polynomial handled through formula
@@ -115,7 +115,7 @@ tl_to_caret <- function(model) {
   }
 
   # Copy over any important attributes
-  attr(caret_model, "tidylearn_origin") <- list(
+  attr(caret_model, "tidysl_origin") <- list(
     method = method,
     spec = model$spec
   )
@@ -123,10 +123,10 @@ tl_to_caret <- function(model) {
   return(caret_model)
 }
 
-#' Convert a caret model to a tidylearn model
+#' Convert a caret model to a tidysl model
 #'
 #' @param model A caret model object
-#' @return A tidylearn model object
+#' @return A tidysl model object
 #' @export
 tl_from_caret <- function(model) {
   # Check if caret is installed
@@ -137,7 +137,7 @@ tl_from_caret <- function(model) {
     stop("Input must be a caret train object", call. = FALSE)
   }
 
-  # Extract components needed for tidylearn model
+  # Extract components needed for tidysl model
   method <- model$method
   formula <- model$call$form
   data <- model$trainingData
@@ -163,8 +163,8 @@ tl_from_caret <- function(model) {
     }
   }
 
-  # Map caret methods to tidylearn methods
-  tidylearn_method <- switch(method,
+  # Map caret methods to tidysl methods
+  tidysl_method <- switch(method,
                              "lm" = "linear",
                              "glm" = if (model$modelInfo$parameter$family == "binomial") "logistic" else "linear",
                              "glmnet" = if (!is.null(model$bestTune$alpha)) {
@@ -180,42 +180,42 @@ tl_from_caret <- function(model) {
                              "xgbTree" = "xgboost",
                              "svmRadial" = "svm",
                              "nnet" = "nn",
-                             stop("Unsupported caret method for tidylearn conversion: ", method, call. = FALSE)
+                             stop("Unsupported caret method for tidysl conversion: ", method, call. = FALSE)
   )
 
   # Extract fitted model
   fit <- model$finalModel
 
-  # Create tidylearn model
-  tidylearn_model <- structure(
+  # Create tidysl model
+  tidysl_model <- structure(
     list(
       spec = list(
         formula = formula,
-        method = tidylearn_method,
+        method = tidysl_method,
         is_classification = !model$modelInfo$type %in% c("Regression", "Clustering"),
         response_var = as.character(formula[[2]])
       ),
       fit = fit,
       data = model$trainingData
     ),
-    class = c(paste0("tidylearn_", tidylearn_method), "tidylearn_model")
+    class = c(paste0("tidysl_", tidysl_method), "tidysl_model")
   )
 
-  return(tidylearn_model)
+  return(tidysl_model)
 }
 
-#' Convert a tidylearn model to a tidymodels workflow
+#' Convert a tidysl model to a tidymodels workflow
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @return A tidymodels workflow object
 #' @export
 tl_to_tidymodels <- function(model) {
   # Check if tidymodels packages are installed
   tl_check_packages(c("parsnip", "recipes", "workflows", "dplyr"))
 
-  # Check input is a tidylearn model
-  if (!inherits(model, "tidylearn_model")) {
-    stop("Input must be a tidylearn model object", call. = FALSE)
+  # Check input is a tidysl model
+  if (!inherits(model, "tidysl_model")) {
+    stop("Input must be a tidysl model object", call. = FALSE)
   }
 
   # Extract components needed for tidymodels
@@ -228,7 +228,7 @@ tl_to_tidymodels <- function(model) {
   # Create recipe from formula
   recipe_obj <- recipes::recipe(formula, data = data)
 
-  # Map tidylearn methods to parsnip models
+  # Map tidysl methods to parsnip models
   if (method == "linear" || method == "polynomial") {
     if (is_classification) {
       # For classification, use logistic regression
@@ -315,8 +315,8 @@ tl_to_tidymodels <- function(model) {
     return(workflow_obj)
   })
 
-  # Add attribute to track original tidylearn model
-  attr(fitted_workflow, "tidylearn_origin") <- list(
+  # Add attribute to track original tidysl model
+  attr(fitted_workflow, "tidysl_origin") <- list(
     method = method,
     spec = model$spec
   )
@@ -324,10 +324,10 @@ tl_to_tidymodels <- function(model) {
   return(fitted_workflow)
 }
 
-#' Convert a tidymodels workflow to a tidylearn model
+#' Convert a tidymodels workflow to a tidysl model
 #'
 #' @param workflow A tidymodels workflow object
-#' @return A tidylearn model object
+#' @return A tidysl model object
 #' @export
 tl_from_tidymodels <- function(workflow) {
   # Check if tidymodels packages are installed
@@ -339,8 +339,9 @@ tl_from_tidymodels <- function(workflow) {
   }
 
   # Check if workflow is fitted
-  if (!workflows::is_fitted(workflow)) {
-    stop("Workflow must be fitted before conversion to tidylearn model", call. = FALSE)
+  is_fitted <- utils::getFromNamespace("is_fitted", "workflows")
+  if (!is_fitted(workflow)) {
+    stop("Workflow must be fitted before conversion to tidysl model", call. = FALSE)
   }
 
   # Extract model specification
@@ -395,24 +396,24 @@ tl_from_tidymodels <- function(workflow) {
   # Determine model type
   engine <- model_spec$engine
 
-  # Map tidymodels models to tidylearn methods
+  # Map tidymodels models to tidysl methods
   if (inherits(model_spec, "linear_reg")) {
-    tidylearn_method <- "linear"
+    tidysl_method <- "linear"
   } else if (inherits(model_spec, "logistic_reg")) {
-    tidylearn_method <- "logistic"
+    tidysl_method <- "logistic"
   } else if (inherits(model_spec, "multinom_reg")) {
-    tidylearn_method <- "logistic"  # Multinomial logistic regression
+    tidysl_method <- "logistic"  # Multinomial logistic regression
   } else if (inherits(model_spec, "decision_tree")) {
-    tidylearn_method <- "tree"
+    tidysl_method <- "tree"
   } else if (inherits(model_spec, "rand_forest")) {
-    tidylearn_method <- "forest"
+    tidysl_method <- "forest"
   } else if (inherits(model_spec, "boost_tree")) {
-    tidylearn_method <- if (engine == "xgboost") "xgboost" else "boost"
+    tidysl_method <- if (engine == "xgboost") "xgboost" else "boost"
   } else if (inherits(model_spec, "svm_rbf") || inherits(model_spec, "svm_poly") ||
              inherits(model_spec, "svm_linear")) {
-    tidylearn_method <- "svm"
+    tidysl_method <- "svm"
   } else if (inherits(model_spec, "mlp")) {
-    tidylearn_method <- "nn"
+    tidysl_method <- "nn"
   } else {
     stop("Unsupported tidymodels model type for conversion", call. = FALSE)
   }
@@ -423,36 +424,36 @@ tl_from_tidymodels <- function(workflow) {
   # Get response variable
   response_var <- all.vars(formula)[1]
 
-  # Create tidylearn model
-  tidylearn_model <- structure(
+  # Create tidysl model
+  tidysl_model <- structure(
     list(
       spec = list(
         formula = formula,
-        method = tidylearn_method,
+        method = tidysl_method,
         is_classification = is_classification,
         response_var = response_var
       ),
       fit = fit,
       data = data
     ),
-    class = c(paste0("tidylearn_", tidylearn_method), "tidylearn_model")
+    class = c(paste0("tidysl_", tidysl_method), "tidysl_model")
   )
 
-  return(tidylearn_model)
+  return(tidysl_model)
 }
 
-#' Export a tidylearn model to an external format
+#' Export a tidysl model to an external format
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param format Export format: "rds", "onnx", "pmml", "json"
 #' @param file Path to save the exported model (if NULL, returns the model object)
 #' @param ... Additional arguments for the specific export format
 #' @return The exported model or NULL if saved to file
 #' @export
 tl_export_model <- function(model, format = "rds", file = NULL, ...) {
-  # Check input is a tidylearn model
-  if (!inherits(model, "tidylearn_model")) {
-    stop("Input must be a tidylearn model object", call. = FALSE)
+  # Check input is a tidysl model
+  if (!inherits(model, "tidysl_model")) {
+    stop("Input must be a tidysl model object", call. = FALSE)
   }
 
   # Export based on format
@@ -474,7 +475,7 @@ tl_export_model <- function(model, format = "rds", file = NULL, ...) {
       coefficients <- stats::coef(model$fit)
 
       # Create ONNX model using Python
-      reticulate::source_python(system.file("python", "linear_to_onnx.py", package = "tidylearn"))
+      reticulate::source_python(system.file("python", "linear_to_onnx.py", package = "tidysl"))
       onnx_model <- linear_model_to_onnx(
         coefficients = coefficients,
         is_classification = model$spec$is_classification,
@@ -482,11 +483,11 @@ tl_export_model <- function(model, format = "rds", file = NULL, ...) {
       )
     } else if (model$spec$method == "forest") {
       # For random forest models
-      reticulate::source_python(system.file("python", "rf_to_onnx.py", package = "tidylearn"))
+      reticulate::source_python(system.file("python", "rf_to_onnx.py", package = "tidysl"))
       onnx_model <- random_forest_to_onnx(model$fit)
     } else if (model$spec$method == "xgboost") {
       # For XGBoost models
-      reticulate::source_python(system.file("python", "xgboost_to_onnx.py", package = "tidylearn"))
+      reticulate::source_python(system.file("python", "xgboost_to_onnx.py", package = "tidysl"))
       onnx_model <- xgboost_to_onnx(model$fit)
     } else {
       stop("ONNX export not supported for model type: ", model$spec$method, call. = FALSE)
@@ -496,7 +497,8 @@ tl_export_model <- function(model, format = "rds", file = NULL, ...) {
     if (is.null(file)) {
       return(onnx_model)
     } else {
-      onnx::write_onnx(onnx_model, file)
+      write_onnx <- utils::getFromNamespace("write_onnx", "onnx")
+      write_onnx(onnx_model, file)
       return(invisible(NULL))
     }
   } else if (format == "pmml") {
@@ -520,7 +522,10 @@ tl_export_model <- function(model, format = "rds", file = NULL, ...) {
     if (is.null(file)) {
       return(pmml_model)
     } else {
-      saveXML(pmml_model, file)
+      if (!requireNamespace("XML", quietly = TRUE)) {
+        stop("Package 'XML' is required for saving PMML to file.", call. = FALSE)
+      }
+      XML::saveXML(pmml_model, file)
       return(invisible(NULL))
     }
   } else if (format == "json") {
@@ -576,12 +581,12 @@ tl_export_model <- function(model, format = "rds", file = NULL, ...) {
   }
 }
 
-#' Import a tidylearn model from an external format
+#' Import a tidysl model from an external format
 #'
 #' @param file Path to the model file
 #' @param format Import format: "rds", "onnx", "pmml", "json"
 #' @param ... Additional arguments for the specific import format
-#' @return A tidylearn model object
+#' @return A tidysl model object
 #' @export
 tl_import_model <- function(file, format = "rds", ...) {
   # Import based on format
@@ -589,9 +594,9 @@ tl_import_model <- function(file, format = "rds", ...) {
     # Load from R object
     model <- readRDS(file)
 
-    # Check if it's a tidylearn model
-    if (!inherits(model, "tidylearn_model")) {
-      stop("Imported object is not a tidylearn model", call. = FALSE)
+    # Check if it's a tidysl model
+    if (!inherits(model, "tidysl_model")) {
+      stop("Imported object is not a tidysl model", call. = FALSE)
     }
 
     return(model)
@@ -600,9 +605,10 @@ tl_import_model <- function(file, format = "rds", ...) {
     tl_check_packages(c("reticulate", "onnx"))
 
     # Load ONNX model
-    onnx_model <- onnx::read_onnx(file)
+    read_onnx <- utils::getFromNamespace("read_onnx", "onnx")
+    onnx_model <- read_onnx(file)
 
-    # Convert to a tidylearn model (simplified)
+    # Convert to a tidysl model (simplified)
     # This is a limited conversion as ONNX models don't contain all the original information
 
     # Detect model type and create a basic representation
@@ -624,7 +630,7 @@ tl_import_model <- function(file, format = "rds", ...) {
       }
     }
 
-    # Create a basic tidylearn model
+    # Create a basic tidysl model
     model <- structure(
       list(
         spec = list(
@@ -636,11 +642,11 @@ tl_import_model <- function(file, format = "rds", ...) {
         fit = onnx_model,  # Store the ONNX model directly
         data = NULL  # No data available
       ),
-      class = c(paste0("tidylearn_", model_type), "tidylearn_model", "tidylearn_onnx")
+      class = c(paste0("tidysl_", model_type), "tidysl_model", "tidysl_onnx")
     )
 
     # Add custom predict method for ONNX models
-    class(model) <- c("tidylearn_onnx", class(model))
+    class(model) <- c("tidysl_onnx", class(model))
 
     return(model)
   } else if (format == "pmml") {
@@ -664,7 +670,7 @@ tl_import_model <- function(file, format = "rds", ...) {
       model_type <- "forest"
     }
 
-    # Create a basic tidylearn model
+    # Create a basic tidysl model
     model <- structure(
       list(
         spec = list(
@@ -678,11 +684,11 @@ tl_import_model <- function(file, format = "rds", ...) {
         fit = pmml_model,  # Store the PMML model directly
         data = NULL  # No data available
       ),
-      class = c(paste0("tidylearn_", model_type), "tidylearn_model", "tidylearn_pmml")
+      class = c(paste0("tidysl_", model_type), "tidysl_model", "tidysl_pmml")
     )
 
     # Add custom predict method for PMML models
-    class(model) <- c("tidylearn_pmml", class(model))
+    class(model) <- c("tidysl_pmml", class(model))
 
     return(model)
   } else if (format == "json") {
@@ -737,7 +743,7 @@ tl_import_model <- function(file, format = "rds", ...) {
       class(fit) <- "json_model"
     }
 
-    # Create a tidylearn model
+    # Create a tidysl model
     model <- structure(
       list(
         spec = list(
@@ -749,11 +755,11 @@ tl_import_model <- function(file, format = "rds", ...) {
         fit = fit,
         data = NULL  # No data available
       ),
-      class = c(paste0("tidylearn_", method), "tidylearn_model", "tidylearn_json")
+      class = c(paste0("tidysl_", method), "tidysl_model", "tidysl_json")
     )
 
     # Add custom predict method for JSON models
-    class(model) <- c("tidylearn_json", class(model))
+    class(model) <- c("tidysl_json", class(model))
 
     return(model)
   } else {
@@ -763,13 +769,13 @@ tl_import_model <- function(file, format = "rds", ...) {
 
 #' Predict method for ONNX models
 #'
-#' @param object A tidylearn_onnx model object
+#' @param object A tidysl_onnx model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction
 #' @param ... Additional arguments
 #' @return Predictions
 #' @export
-predict.tidylearn_onnx <- function(object, new_data, type = "response", ...) {
+predict.tidysl_onnx <- function(object, new_data, type = "response", ...) {
   # Check if reticulate and onnx packages are installed
   tl_check_packages(c("reticulate", "onnx", "onnxruntime"))
 
@@ -801,13 +807,13 @@ predict.tidylearn_onnx <- function(object, new_data, type = "response", ...) {
 
 #' Predict method for PMML models
 #'
-#' @param object A tidylearn_pmml model object
+#' @param object A tidysl_pmml model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction
 #' @param ... Additional arguments
 #' @return Predictions
 #' @export
-predict.tidylearn_pmml <- function(object, new_data, type = "response", ...) {
+predict.tidysl_pmml <- function(object, new_data, type = "response", ...) {
   # Check if pmml package is installed
   tl_check_packages("pmml")
 
@@ -820,7 +826,8 @@ predict.tidylearn_pmml <- function(object, new_data, type = "response", ...) {
   pmml_model <- object$fit
 
   # Predict using pmml
-  preds <- pmmlTransformations::predict_pmml(pmml_model, newdata = new_data)
+  predict_pmml <- utils::getFromNamespace("predict_pmml", "pmmlTransformations")
+  preds <- predict_pmml(pmml_model, newdata = new_data)
 
   # Format predictions based on type and model classification status
   if (object$spec$is_classification) {
@@ -843,13 +850,13 @@ predict.tidylearn_pmml <- function(object, new_data, type = "response", ...) {
 
 #' Predict method for JSON models
 #'
-#' @param object A tidylearn_json model object
+#' @param object A tidysl_json model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction
 #' @param ... Additional arguments
 #' @return Predictions
 #' @export
-predict.tidylearn_json <- function(object, new_data, type = "response", ...) {
+predict.tidysl_json <- function(object, new_data, type = "response", ...) {
   # Get model information
   method <- object$spec$method
   is_classification <- object$spec$is_classification

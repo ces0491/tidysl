@@ -1,6 +1,6 @@
-#' @title tidylearn: A Tidy Approach to Supervised Learning
-#' @name tidylearn-core
-#' @description Core functionality for the tidylearn package
+#' @title tidysl: A Tidy Approach to Supervised Learning
+#' @name tidysl-core
+#' @description Core functionality for the tidysl package
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data .env
 #' @importFrom dplyr filter select mutate group_by summarize arrange
@@ -26,13 +26,13 @@ NULL
 #' @rdname pipe
 `%>%` <- magrittr::`%>%`
 
-#' Create a tidylearn model
+#' Create a tidysl model
 #'
 #' @param data A data frame containing the training data
 #' @param formula A formula specifying the model
 #' @param method The modeling method to use (e.g., "linear", "logistic", "tree", etc.)
 #' @param ... Additional arguments to pass to the underlying model function
-#' @return A tidylearn model object
+#' @return A tidysl model object
 #' @export
 tl_model <- function(data, formula, method = "linear", ...) {
   # Validate inputs
@@ -81,28 +81,28 @@ tl_model <- function(data, formula, method = "linear", ...) {
     stop("Unsupported method: ", method, call. = FALSE)
   )
 
-  # Create and return tidylearn model object
+  # Create and return tidysl model object
   model <- structure(
     list(
       spec = model_spec,
       fit = fitted_model,
       data = data
     ),
-    class = c(paste0("tidylearn_", method), "tidylearn_model")
+    class = c(paste0("tidysl_", method), "tidysl_model")
   )
 
   return(model)
 }
 
-#' Predict using a tidylearn model
+#' Predict using a tidysl model
 #'
-#' @param object A tidylearn model object
+#' @param object A tidysl model object
 #' @param new_data A data frame containing the new data for prediction
 #' @param type Type of prediction: "response", "prob", "class", etc.
 #' @param ... Additional arguments
 #' @return A tibble of predictions
 #' @export
-predict.tidylearn_model <- function(object, new_data = NULL, type = "response", ...) {
+predict.tidysl_model <- function(object, new_data = NULL, type = "response", ...) {
   if (is.null(new_data)) {
     new_data <- object$data
   }
@@ -138,9 +138,9 @@ predict.tidylearn_model <- function(object, new_data = NULL, type = "response", 
   }
 }
 
-#' Evaluate a tidylearn model
+#' Evaluate a tidysl model
 #'
-#' @param model A tidylearn model object
+#' @param model A tidysl model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param metrics Character vector of metrics to compute
 #' @param ... Additional arguments
@@ -196,7 +196,7 @@ tl_evaluate <- function(model, new_data = NULL,
   return(results)
 }
 
-#' Cross-validate a tidylearn model
+#' Cross-validate a tidysl model
 #'
 #' @param data A data frame containing the training data
 #' @param formula A formula specifying the model
@@ -263,14 +263,14 @@ tl_cv <- function(data, formula, method = "linear",
   ))
 }
 
-#' Plot a tidylearn model
+#' Plot a tidysl model
 #'
-#' @param x A tidylearn model object
+#' @param x A tidysl model object
 #' @param type Type of plot to create
 #' @param ... Additional arguments
 #' @return A ggplot object
 #' @export
-plot.tidylearn_model <- function(x, type = "diagnostics", ...) {
+plot.tidysl_model <- function(x, type = "diagnostics", ...) {
   model <- x
   method <- model$spec$method
   is_classification <- model$spec$is_classification
@@ -299,13 +299,13 @@ plot.tidylearn_model <- function(x, type = "diagnostics", ...) {
   }
 }
 
-#' Print method for tidylearn models
+#' Print method for tidysl models
 #'
-#' @param x A tidylearn model object
+#' @param x A tidysl model object
 #' @param ... Additional arguments (not used)
 #' @return Invisibly returns the model object
 #' @export
-print.tidylearn_model <- function(x, ...) {
+print.tidysl_model <- function(x, ...) {
   cat("Tidylearn", x$spec$method, "model\n")
   cat("Formula:", deparse(x$spec$formula), "\n")
   cat("Type:", ifelse(x$spec$is_classification, "Classification", "Regression"), "\n")
@@ -319,13 +319,13 @@ print.tidylearn_model <- function(x, ...) {
   invisible(x)
 }
 
-#' Summary method for tidylearn models
+#' Summary method for tidysl models
 #'
-#' @param object A tidylearn model object
+#' @param object A tidysl model object
 #' @param ... Additional arguments (not used)
 #' @return Invisibly returns the model summary
 #' @export
-summary.tidylearn_model <- function(object, ...) {
+summary.tidysl_model <- function(object, ...) {
   model <- object
 
   # Extract method-specific summary

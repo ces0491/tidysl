@@ -2,12 +2,12 @@
 % Please edit documentation in R/core.R
 \name{tl_evaluate}
 \alias{tl_evaluate}
-\title{Evaluate a tidylearn model}
+\title{Evaluate a tidysl model}
 \usage{
 tl_evaluate(model, new_data = NULL, metrics = NULL, ...)
 }
 \arguments{
-\item{model}{A tidylearn model object}
+\item{model}{A tidysl model object}
 
 \item{new_data}{Optional data frame for evaluation (if NULL, uses training data)}
 
@@ -19,5 +19,5 @@ tl_evaluate(model, new_data = NULL, metrics = NULL, ...)
 A tibble of evaluation metrics
 }
 \description{
-Evaluate a tidylearn model
+Evaluate a tidysl model
 }

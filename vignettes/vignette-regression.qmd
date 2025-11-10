@@ -1,10 +1,10 @@
 ---
-title: "Regression Analysis with tidylearn"
-author: "tidylearn Team"
+title: "Regression Analysis with tidysl"
+author: "tidysl Team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Regression Analysis with tidylearn}
+  %\VignetteIndexEntry{Regression Analysis with tidysl}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This vignette demonstrates how to use the `tidylearn` package for regression analysis. The `tidylearn` package provides a consistent interface for various supervised learning methods following tidyverse principles.
+This vignette demonstrates how to use the `tidysl` package for regression analysis. The `tidysl` package provides a consistent interface for various supervised learning methods following tidyverse principles.
 
 ## Setup
 
 First, let's load the necessary packages:
 
 ```{r packages, message=FALSE, warning=FALSE}
-library(tidylearn)
+library(tidysl)
 library(tidyverse)
 library(modeldata)  # For example datasets
 ```
@@ -79,7 +79,7 @@ lm_eval
 
 ## Model Visualization
 
-`tidylearn` provides various visualization functions:
+`tidysl` provides various visualization functions:
 
 ```{r visualization}
 # Plot actual vs predicted
@@ -232,7 +232,7 @@ tl_plot_intervals(lm_model, test_data)
 
 ## Conclusion
 
-This vignette demonstrated how to use the `tidylearn` package for regression analysis. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
+This vignette demonstrated how to use the `tidysl` package for regression analysis. The package provides a consistent interface for various supervised learning methods, making it easy to try different approaches and compare their performance.
 
 Key features:
 - Simple, consistent API across different models

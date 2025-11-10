@@ -406,7 +406,7 @@ def xgboost_to_onnx(xgb_model, n_features, n_classes=None, feature_names=None):
     model_name = 'xgboost_classifier' if is_classification else 'xgboost_regressor'
     onnx_model = helper.make_model(
         graph, 
-        producer_name='tidylearn',
+        producer_name='tidysl',
         opset_imports=[helper.make_opsetid('', 12)]
     )
     

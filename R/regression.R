@@ -1,5 +1,5 @@
-#' @title Regression Functions for tidylearn
-#' @name tidylearn-regression
+#' @title Regression Functions for tidysl
+#' @name tidysl-regression
 #' @description Linear and polynomial regression functionality
 #' @importFrom stats lm predict poly model.matrix
 #' @importFrom tibble tibble
@@ -20,7 +20,7 @@ tl_fit_linear <- function(data, formula, ...) {
 
 #' Predict using a linear regression model
 #'
-#' @param model A tidylearn linear model object
+#' @param model A tidysl linear model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "response" (default), "confidence", "prediction"
 #' @param level Confidence level for intervals (default: 0.95)
@@ -85,7 +85,7 @@ tl_fit_polynomial <- function(data, formula, degree = 2, ...) {
 
 #' Predict using a polynomial regression model
 #'
-#' @param model A tidylearn polynomial model object
+#' @param model A tidysl polynomial model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "response" (default), "confidence", "prediction"
 #' @param level Confidence level for intervals (default: 0.95)
@@ -114,7 +114,7 @@ tl_predict_polynomial <- function(model, new_data, type = "response", level = 0.
 
 #' Plot diagnostics for a regression model
 #'
-#' @param model A tidylearn regression model object
+#' @param model A tidysl regression model object
 #' @param which Which plots to create (1:4)
 #' @param ... Additional arguments
 #' @return A ggplot object (or list of ggplot objects)
@@ -179,7 +179,7 @@ tl_plot_diagnostics <- function(model, which = 1:4, ...) {
       ggplot2::labs(
         title = "Scale-Location",
         x = "Fitted values",
-        y = "√|Standardized residuals|"
+        y = "\u221a|Standardized residuals|"
       ) +
       ggplot2::theme_minimal()
 
@@ -214,7 +214,7 @@ tl_plot_diagnostics <- function(model, which = 1:4, ...) {
 
 #' Plot actual vs predicted values for a regression model
 #'
-#' @param model A tidylearn regression model object
+#' @param model A tidysl regression model object
 #' @param new_data Optional data frame for evaluation (if NULL, uses training data)
 #' @param ... Additional arguments
 #' @return A ggplot object
@@ -245,7 +245,7 @@ tl_plot_actual_predicted <- function(model, new_data = NULL, ...) {
     ggplot2::geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
     ggplot2::labs(
       title = "Actual vs Predicted Values",
-      subtitle = paste0("Correlation: ", corr, ", R²: ", r_squared),
+      subtitle = paste0("Correlation: ", corr, ", R\u00b2: ", r_squared),
       x = "Actual values",
       y = "Predicted values"
     ) +
@@ -256,7 +256,7 @@ tl_plot_actual_predicted <- function(model, new_data = NULL, ...) {
 
 #' Plot residuals for a regression model
 #'
-#' @param model A tidylearn regression model object
+#' @param model A tidysl regression model object
 #' @param type Type of residual plot: "fitted" (default), "histogram", "predicted"
 #' @param ... Additional arguments
 #' @return A ggplot object
@@ -318,7 +318,7 @@ tl_plot_residuals <- function(model, type = "fitted", ...) {
 
 #' Create confidence and prediction interval plots
 #'
-#' @param model A tidylearn regression model object
+#' @param model A tidysl regression model object
 #' @param new_data Optional data frame for prediction (if NULL, uses training data)
 #' @param level Confidence level (default: 0.95)
 #' @param ... Additional arguments
@@ -376,4 +376,33 @@ tl_plot_intervals <- function(model, new_data = NULL, level = 0.95, ...) {
     ggplot2::theme_minimal()
 
   return(p)
+}
+#' Calculate prediction and confidence intervals for linear models
+#'
+#' @param model A tidysl model object
+#' @param new_data Data frame for predictions
+#' @param level Confidence level (default 0.95)
+#' @return A list with predictions and intervals
+#' @keywords internal
+tl_prediction_intervals <- function(model, new_data, level = 0.95) {
+  # Check if this is a linear model
+  if (!model$spec$method %in% c("linear", "polynomial")) {
+    stop("Prediction intervals are only supported for linear and polynomial models", call. = FALSE)
+  }
+
+  # Get the fitted model
+  fit <- model$fit
+
+  # Make predictions with confidence intervals
+  conf_pred <- stats::predict(fit, newdata = new_data, interval = "confidence", level = level)
+  pred_pred <- stats::predict(fit, newdata = new_data, interval = "prediction", level = level)
+
+  # Return as a list
+  return(list(
+    prediction = conf_pred[, "fit"],
+    conf_lower = conf_pred[, "lwr"],
+    conf_upper = conf_pred[, "upr"],
+    pred_lower = pred_pred[, "lwr"],
+    pred_upper = pred_pred[, "upr"]
+  ))
 }

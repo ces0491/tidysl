@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# Script to run all tests and check code coverage for tidylearn package
+# Script to run all tests and check code coverage for tidysl package
 # Usage: Rscript run-tests.R [all|unit|examples|vignettes|lint|coverage]
 
 library(testthat)

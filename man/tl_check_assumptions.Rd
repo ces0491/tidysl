@@ -7,7 +7,7 @@
 tl_check_assumptions(model, test = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{model}{A tidylearn model object}
+\item{model}{A tidysl model object}
 
 \item{test}{Logical; whether to perform statistical tests}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/integration.R
 \name{tl_from_tidymodels}
 \alias{tl_from_tidymodels}
-\title{Convert a tidymodels workflow to a tidylearn model}
+\title{Convert a tidymodels workflow to a tidysl model}
 \usage{
 tl_from_tidymodels(workflow)
 }
@@ -10,8 +10,8 @@ tl_from_tidymodels(workflow)
 \item{workflow}{A tidymodels workflow object}
 }
 \value{
-A tidylearn model object
+A tidysl model object
 }
 \description{
-Convert a tidymodels workflow to a tidylearn model
+Convert a tidymodels workflow to a tidysl model
 }

@@ -1,2 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^vignettes$
+^README\.html$
+^README\.qmd$
+^README_files$
+^_pkgdown\.yml$
+^pkg-structure$
+^\.github$
+^\.claude$
+^LICENSE\.md$

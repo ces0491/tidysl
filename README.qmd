@@ -1,13 +1,13 @@
-# tidylearn: A Tidy Approach to Supervised Learning in R
+# tidysl: A Tidy Approach to Supervised Learning in R
 
-[![CRAN](https://img.shields.io/cran/v/tidylearn)](https://cran.r-project.org/package=tidylearn)
-[![R-CMD-check](https://github.com/ces0491/tidylearn/workflows/R-CMD-check/badge.svg)](https://github.com/ces0491/tidylearn/actions)
-[![Codecov](https://codecov.io/gh/ces0491/tidylearn/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ces0491/tidylearn)
-[![Downloads](https://cranlogs.r-pkg.org/badges/tidylearn)](https://cran.r-project.org/package=tidylearn)
+[![CRAN](https://img.shields.io/cran/v/tidysl)](https://cran.r-project.org/package=tidysl)
+[![R-CMD-check](https://github.com/ces0491/tidysl/workflows/R-CMD-check/badge.svg)](https://github.com/ces0491/tidysl/actions)
+[![Codecov](https://codecov.io/gh/ces0491/tidysl/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ces0491/tidysl)
+[![Downloads](https://cranlogs.r-pkg.org/badges/tidysl)](https://cran.r-project.org/package=tidysl)
 
 ## Overview
 
-`tidylearn` is a comprehensive machine learning package for R that provides a unified, tidy approach to supervised learning models. It is designed to be user-friendly and to integrate seamlessly with the tidyverse ecosystem.
+`tidysl` is a comprehensive machine learning package for R that provides a unified, tidy approach to supervised learning models. It is designed to be user-friendly and to integrate seamlessly with the tidyverse ecosystem.
 
 The package simplifies the process of building, evaluating, and comparing different models, while providing rich diagnostics and visualizations to help you understand model behavior and performance.
 
@@ -33,17 +33,17 @@ The package simplifies the process of building, evaluating, and comparing differ
 
 ```r
 # Install from CRAN
-install.packages("tidylearn")
+install.packages("tidysl")
 
 # Or install the development version from GitHub
 # install.packages("devtools")
-devtools::install_github("ces0491/tidylearn")
+devtools::install_github("ces0491/tidysl")
 ```
 
 ## Quick Start
 
 ```r
-library(tidylearn)
+library(tidysl)
 
 # Load example data
 data(mtcars)
@@ -116,10 +116,10 @@ best_model <- tl_get_best_model(results)
 
 ### Integration
 
-- `tl_to_caret()` - Convert a tidylearn model to a caret model
-- `tl_from_caret()` - Convert a caret model to a tidylearn model
-- `tl_to_tidymodels()` - Convert a tidylearn model to a tidymodels workflow
-- `tl_from_tidymodels()` - Convert a tidymodels workflow to a tidylearn model
+- `tl_to_caret()` - Convert a tidysl model to a caret model
+- `tl_from_caret()` - Convert a caret model to a tidysl model
+- `tl_to_tidymodels()` - Convert a tidysl model to a tidymodels workflow
+- `tl_from_tidymodels()` - Convert a tidymodels workflow to a tidysl model
 - `tl_export_model()` - Export a model to various formats (RDS, ONNX, PMML, JSON)
 - `tl_import_model()` - Import a model from various formats
 
@@ -260,11 +260,11 @@ tl_save_pipeline(results, "my_pipeline.rds")
 
 ## Documentation
 
-For detailed documentation, examples, and vignettes, please visit [https://ces0491.github.io/tidylearn/](https://ces0491.github.io/tidylearn/).
+For detailed documentation, examples, and vignettes, please visit [https://ces0491.github.io/tidysl/](https://ces0491.github.io/tidysl/).
 
 ## Contributing
 
-Contributions to tidylearn are welcome! Here's how you can contribute:
+Contributions to tidysl are welcome! Here's how you can contribute:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -278,7 +278,7 @@ Please make sure your code follows the [tidyverse style guide](https://style.tid
 
 ## Dependencies
 
-tidylearn integrates with several excellent machine learning packages:
+tidysl integrates with several excellent machine learning packages:
 
 - **Core**: dplyr, tidyr, purrr, tibble, ggplot2, magrittr
 - **Models**: glmnet, randomForest, rpart, gbm, e1071, nnet, keras/tensorflow
@@ -292,4 +292,4 @@ This package is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - The tidyverse team for their elegant approach to data science in R
-- Authors of the various machine learning packages that tidylearn builds upon
+- Authors of the various machine learning packages that tidysl builds upon

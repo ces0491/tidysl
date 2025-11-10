@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{tl_version}
 \alias{tl_version}
-\title{Get tidylearn package version}
+\title{Get tidysl package version}
 \usage{
 tl_version()
 }
@@ -10,5 +10,5 @@ tl_version()
 Character string with the version number
 }
 \description{
-Get tidylearn package version
+Get tidysl package version
 }

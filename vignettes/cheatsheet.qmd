@@ -1,6 +1,6 @@
 ---
-title: "tidylearn Cheat Sheet"
-author: "tidylearn Team"
+title: "tidysl Cheat Sheet"
+author: "tidysl Team"
 date: today
 format:
   html:

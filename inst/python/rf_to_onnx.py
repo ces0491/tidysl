@@ -177,7 +177,7 @@ def random_forest_to_onnx(rf_model, feature_names=None, target_names=None):
     model_name = 'random_forest_classifier' if is_classification else 'random_forest_regressor'
     onnx_model = helper.make_model(
         graph, 
-        producer_name='tidylearn',
+        producer_name='tidysl',
         opset_imports=[helper.make_opsetid('', 12)]
     )
     

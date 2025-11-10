@@ -63,7 +63,7 @@ test_that("tl_predict_xgboost correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model_reg) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock model.matrix and predict functions to avoid errors in testing
   mockery::stub(tl_predict_xgboost, "stats::model.matrix", function(...) {
@@ -101,7 +101,7 @@ test_that("tl_predict_xgboost correctly predicts with different types", {
     fit = fit_binary,
     data = iris_sub
   )
-  class(model_binary) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model_binary) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock model.matrix and predict functions for binary classification
   mockery::stub(tl_predict_xgboost, "xgboost::predict", function(...) {
@@ -139,7 +139,7 @@ test_that("tl_plot_xgboost_importance creates importance plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock the xgb.importance function to avoid errors in testing
   mockery::stub(tl_plot_xgboost_importance, "xgboost::xgb.importance", function(...) {
@@ -178,7 +178,7 @@ test_that("tl_plot_xgboost_tree creates tree plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock the xgb.plot.tree function to avoid errors in testing
   mockery::stub(tl_plot_xgboost_tree, "xgboost::xgb.plot.tree", function(...) TRUE)
@@ -229,9 +229,9 @@ test_that("tl_tune_xgboost tunes hyperparameters", {
                                  param_grid = param_grid, cv_folds = 3,
                                  early_stopping_rounds = 5, verbose = FALSE)
 
-  # Check if result is a tidylearn model
-  expect_s3_class(tuned_model, "tidylearn_model")
-  expect_s3_class(tuned_model, "tidylearn_xgboost")
+  # Check if result is a tidysl model
+  expect_s3_class(tuned_model, "tidysl_model")
+  expect_s3_class(tuned_model, "tidysl_xgboost")
 
   # Check if tuning results are stored
   expect_true(!is.null(attr(tuned_model, "tuning_results")))
@@ -259,7 +259,7 @@ test_that("tl_xgboost_shap calculates SHAP values", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock predict with contrib parameter to avoid errors in testing
   mockery::stub(tl_xgboost_shap, "xgboost::predict", function(...) {
@@ -299,7 +299,7 @@ test_that("tl_plot_xgboost_shap_summary creates SHAP summary plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock tl_xgboost_shap to avoid errors in testing
   mockery::stub(tl_plot_xgboost_shap_summary, "tl_xgboost_shap", function(...) {
@@ -342,7 +342,7 @@ test_that("tl_plot_xgboost_shap_dependence creates dependence plots", {
     fit = fit,
     data = mtcars
   )
-  class(model) <- c("tidylearn_xgboost", "tidylearn_model")
+  class(model) <- c("tidysl_xgboost", "tidysl_model")
 
   # Mock tl_xgboost_shap to avoid errors in testing
   mockery::stub(tl_plot_xgboost_shap_dependence, "tl_xgboost_shap", function(...) {

@@ -2,16 +2,16 @@
 % Please edit documentation in R/integration.R
 \name{tl_to_caret}
 \alias{tl_to_caret}
-\title{Convert a tidylearn model to a caret model}
+\title{Convert a tidysl model to a caret model}
 \usage{
 tl_to_caret(model)
 }
 \arguments{
-\item{model}{A tidylearn model object}
+\item{model}{A tidysl model object}
 }
 \value{
 A caret model object
 }
 \description{
-Convert a tidylearn model to a caret model
+Convert a tidysl model to a caret model
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/integration.R
 \name{tl_from_caret}
 \alias{tl_from_caret}
-\title{Convert a caret model to a tidylearn model}
+\title{Convert a caret model to a tidysl model}
 \usage{
 tl_from_caret(model)
 }
@@ -10,8 +10,8 @@ tl_from_caret(model)
 \item{model}{A caret model object}
 }
 \value{
-A tidylearn model object
+A tidysl model object
 }
 \description{
-Convert a caret model to a tidylearn model
+Convert a caret model to a tidysl model
 }

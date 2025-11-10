@@ -1,8 +1,8 @@
-# tidylearn Complete Workflow Demo
-# This script demonstrates a complete workflow using the tidylearn package
+# tidysl Complete Workflow Demo
+# This script demonstrates a complete workflow using the tidysl package
 
 # Load necessary packages
-library(tidylearn)
+library(tidysl)
 library(tidyverse)
 library(modeldata)
 library(recipes)

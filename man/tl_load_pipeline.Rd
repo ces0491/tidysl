@@ -10,7 +10,7 @@ tl_load_pipeline(file)
 \item{file}{Path to the pipeline file}
 }
 \value{
-A tidylearn pipeline object
+A tidysl pipeline object
 }
 \description{
 Load a pipeline from disk

@@ -1,4 +1,4 @@
-url: https://ces0491.github.io/tidylearn/
+url: https://ces0491.github.io/tidysl/
 template:
   bootstrap: 5
   bootswatch: cosmo
@@ -15,7 +15,7 @@ navbar:
   components:
     intro:
       text: Get started
-      href: articles/tidylearn.html
+      href: articles/tidysl.html
     articles:
       text: Articles
       menu:
@@ -27,7 +27,7 @@ navbar:
         href: articles/advanced-metrics.html
     github:
       icon: fab fa-github
-      href: https://github.com/username/tidylearn
+      href: https://github.com/username/tidysl
 
 reference:
   - title: "Core Functions"
@@ -35,11 +35,11 @@ reference:
       Main functions for model fitting, prediction, and evaluation
     contents:
       - tl_model
-      - predict.tidylearn_model
+      - predict.tidysl_model
       - tl_evaluate
       - tl_cv
-      - print.tidylearn_model
-      - summary.tidylearn_model
+      - print.tidysl_model
+      - summary.tidysl_model
 
   - title: "Model Types"
     desc: "Functions for specific model types"
@@ -68,7 +68,7 @@ reference:
   - title: "Visualization"
     desc: "Functions for model visualization"
     contents:
-      - plot.tidylearn_model
+      - plot.tidysl_model
       - matches("tl_plot_")
       - tl_dashboard
 
@@ -87,9 +87,9 @@ reference:
 articles:
   - title: "Getting Started"
     desc: >
-      Introduction to tidylearn and basic usage
+      Introduction to tidysl and basic usage
     contents:
-      - tidylearn
+      - tidysl
   - title: "Model Types"
     desc: >
       Detailed guides for each type of model

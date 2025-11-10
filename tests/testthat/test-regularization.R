@@ -130,7 +130,7 @@ test_that("tl_predict_regularized correctly predicts with different types", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_ridge", "tidylearn_model")
+  class(model_reg) <- c("tidysl_ridge", "tidysl_model")
 
   # Mock model.matrix to avoid errors in testing
   mockery::stub(tl_predict_regularized, "stats::model.matrix", function(...) {
@@ -165,7 +165,7 @@ test_that("tl_predict_regularized correctly predicts with different types", {
     fit = fit_class,
     data = iris_sub
   )
-  class(model_class) <- c("tidylearn_ridge", "tidylearn_model")
+  class(model_class) <- c("tidysl_ridge", "tidysl_model")
 
   # Mock model.matrix and predict.glmnet to avoid errors in testing
   mockery::stub(tl_predict_regularized, "glmnet::predict.glmnet", function(...) {
@@ -209,7 +209,7 @@ test_that("tl_plot_regularization_path creates regularization path plots", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_ridge", "tidylearn_model")
+  class(model_reg) <- c("tidysl_ridge", "tidysl_model")
 
   # Mock coef function to avoid errors in testing
   mockery::stub(tl_plot_regularization_path, "coef", function(...) {
@@ -258,7 +258,7 @@ test_that("tl_plot_cv_results creates cross-validation plots", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_ridge", "tidylearn_model")
+  class(model_reg) <- c("tidysl_ridge", "tidysl_model")
 
   # Test plot creation
   p <- tl_plot_cv_results(model_reg)
@@ -287,7 +287,7 @@ test_that("tl_plot_importance_regularized creates importance plots", {
     fit = fit_reg,
     data = mtcars
   )
-  class(model_reg) <- c("tidylearn_lasso", "tidylearn_model")
+  class(model_reg) <- c("tidysl_lasso", "tidysl_model")
 
   # Mock coef function to avoid errors in testing
   mockery::stub(tl_plot_importance_regularized, "coef", function(...) {

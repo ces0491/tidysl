@@ -1,9 +1,30 @@
-#' @title Utility Functions for tidylearn
-#' @name tidylearn-utils
-#' @description General utility functions used across the tidylearn package
-#' @importFrom stats median quantile sd var cor
-#' @importFrom utils packageVersion installed.packages
+#' @title Utility Functions for tidysl
+#' @name tidysl-utils
+#' @description General utility functions used across the tidysl package
+#' @importFrom stats median quantile sd var cor aov coef fitted na.omit qqnorm reorder residuals runif terms update
+#' @importFrom utils packageVersion installed.packages combn hasName
+#' @importFrom tidyselect all_of
 NULL
+
+# Declare global variables used in NSE (non-standard evaluation)
+utils::globalVariables(c(
+  # rlang/tidyverse operators
+  ":=",
+  # Python functions loaded via reticulate (from inst/python/*.py)
+  "linear_model_to_onnx", "random_forest_to_onnx", "xgboost_to_onnx",
+  # ggplot2/dplyr NSE variables
+  "Actual", "Assumption", "Details", "Freq", "Predicted", "Status",
+  "abs_shap_value", "actual", "coefficient", "conf_lower", "conf_upper",
+  "cooks_distance", "cost", "decay", "decile", "epoch", "error",
+  "error_lower", "error_upper",
+  "feature", "feature_value", "fitted", "fold", "fpr", "frac_pos",
+  "interaction_value", "is_best", "is_cook_influential", "is_influential",
+  "is_outlier", "is_top", "label", "lambda", "leverage", "mean_pred_prob",
+  "mean_value", "metric", "model", "n", "observation", "percentage",
+  "pred", "pred_lower", "pred_upper", "predicted", "residuals", "shap_value",
+  "size", "sqrt_abs_residuals", "std_residual", "tpr", "value", "var_value",
+  "variable", "x", "y"
+))
 
 #' Check if required packages are installed
 #'
@@ -24,12 +45,12 @@ tl_check_packages <- function(pkg, error = TRUE) {
   return(is_installed)
 }
 
-#' Get tidylearn package version
+#' Get tidysl package version
 #'
 #' @return Character string with the version number
 #' @export
 tl_version <- function() {
-  version <- as.character(utils::packageVersion("tidylearn"))
+  version <- as.character(utils::packageVersion("tidysl"))
   return(version)
 }
 

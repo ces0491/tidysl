@@ -9,7 +9,7 @@ test_that("tl_pipeline creates a valid pipeline", {
   pipeline <- tl_pipeline(mtcars, mpg ~ hp + wt)
 
   # Check if pipeline is created with the right class
-  expect_s3_class(pipeline, "tidylearn_pipeline")
+  expect_s3_class(pipeline, "tidysl_pipeline")
 
   # Check if pipeline contains required components
   expect_true(all(c("formula", "data", "preprocessing", "models", "evaluation") %in% names(pipeline)))
@@ -38,7 +38,7 @@ test_that("tl_run_pipeline executes pipeline steps", {
   pipeline_result <- tl_run_pipeline(pipeline, verbose = FALSE)
 
   # Check if result is still a pipeline
-  expect_s3_class(pipeline_result, "tidylearn_pipeline")
+  expect_s3_class(pipeline_result, "tidysl_pipeline")
 
   # Check if results are stored
   expect_true("results" %in% names(pipeline_result))
@@ -54,7 +54,7 @@ test_that("tl_run_pipeline executes pipeline steps", {
   # Check if best model is identified
   expect_true("best_model_name" %in% names(pipeline_result$results))
   expect_true("best_model" %in% names(pipeline_result$results))
-  expect_s3_class(pipeline_result$results$best_model, "tidylearn_model")
+  expect_s3_class(pipeline_result$results$best_model, "tidysl_model")
 })
 
 test_that("tl_get_best_model extracts best model from pipeline", {
@@ -65,8 +65,8 @@ test_that("tl_get_best_model extracts best model from pipeline", {
   # Get best model
   best_model <- tl_get_best_model(pipeline_result)
 
-  # Check if best model is a tidylearn model
-  expect_s3_class(best_model, "tidylearn_model")
+  # Check if best model is a tidysl model
+  expect_s3_class(best_model, "tidysl_model")
 
   # Check if best model has the same formula
   expect_equal(as.character(best_model$spec$formula)[2], "mpg ~ hp + wt")
@@ -147,8 +147,8 @@ test_that("tl_save_pipeline and tl_load_pipeline work correctly", {
   # Load pipeline
   loaded_pipeline <- tl_load_pipeline(temp_file)
 
-  # Check if loaded pipeline is a tidylearn_pipeline
-  expect_s3_class(loaded_pipeline, "tidylearn_pipeline")
+  # Check if loaded pipeline is a tidysl_pipeline
+  expect_s3_class(loaded_pipeline, "tidysl_pipeline")
 
   # Check if formulas match
   expect_equal(as.character(pipeline$formula), as.character(loaded_pipeline$formula))
@@ -198,12 +198,12 @@ test_that("pipeline handles classification models correctly", {
   pipeline_result <- tl_run_pipeline(pipeline, verbose = FALSE)
 
   # Check if result is a pipeline
-  expect_s3_class(pipeline_result, "tidylearn_pipeline")
+  expect_s3_class(pipeline_result, "tidysl_pipeline")
 
   # Check if best model is identified
   expect_true("best_model_name" %in% names(pipeline_result$results))
   expect_true("best_model" %in% names(pipeline_result$results))
-  expect_s3_class(pipeline_result$results$best_model, "tidylearn_model")
+  expect_s3_class(pipeline_result$results$best_model, "tidysl_model")
 
   # Make predictions using best model
   preds <- tl_predict_pipeline(pipeline_result, mtcars_binary[1:5, ], type = "class")

@@ -1,5 +1,5 @@
-#' @title Deep Learning for tidylearn
-#' @name tidylearn-deep-learning
+#' @title Deep Learning for tidysl
+#' @name tidysl-deep-learning
 #' @description Deep learning functionality using Keras/TensorFlow
 #' @importFrom stats model.matrix as.formula
 #' @importFrom tibble tibble as_tibble
@@ -133,7 +133,7 @@ tl_fit_deep <- function(data, formula, is_classification = FALSE,
 
 #' Predict using a deep learning model
 #'
-#' @param model A tidylearn deep learning model object
+#' @param model A tidysl deep learning model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "response" (default), "prob" (for classification), "class" (for classification)
 #' @param ... Additional arguments
@@ -152,7 +152,7 @@ tl_predict_deep <- function(model, new_data, type = "response", ...) {
   X_new_scaled <- scale(X_new, center = fit$X_means, scale = fit$X_sds)
 
   # Make predictions
-  raw_preds <- keras::predict(fit$model, X_new_scaled)
+  raw_preds <- predict(fit$model, X_new_scaled)
 
   if (is_classification) {
     if (length(fit$levels) == 2) {
@@ -201,7 +201,7 @@ tl_predict_deep <- function(model, new_data, type = "response", ...) {
 
 #' Plot deep learning model training history
 #'
-#' @param model A tidylearn deep learning model object
+#' @param model A tidysl deep learning model object
 #' @param metrics Which metrics to plot (default: c("loss", "val_loss"))
 #' @param ... Additional arguments
 #' @return A ggplot object with training history
@@ -267,7 +267,7 @@ tl_plot_deep_history <- function(model, metrics = c("loss", "val_loss"), ...) {
 
 #' Plot deep learning model architecture
 #'
-#' @param model A tidylearn deep learning model object
+#' @param model A tidysl deep learning model object
 #' @param ... Additional arguments
 #' @return A plot of the deep learning model architecture
 #' @export
@@ -280,7 +280,8 @@ tl_plot_deep_architecture <- function(model, ...) {
   tl_check_packages("keras")
 
   # Plot model architecture
-  keras::plot_model(
+  plot_model <- utils::getFromNamespace("plot_model", "keras")
+  plot_model(
     model$fit$model,
     show_shapes = TRUE,
     show_layer_names = TRUE,

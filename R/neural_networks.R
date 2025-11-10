@@ -1,5 +1,5 @@
-#' @title Neural Networks for tidylearn
-#' @name tidylearn-neural-networks
+#' @title Neural Networks for tidysl
+#' @name tidysl-neural-networks
 #' @description Neural network functionality for classification and regression
 #' @importFrom nnet nnet
 #' @importFrom stats predict
@@ -65,7 +65,7 @@ tl_fit_nn <- function(data, formula, is_classification = FALSE,
 
 #' Predict using a neural network model
 #'
-#' @param model A tidylearn neural network model object
+#' @param model A tidysl neural network model object
 #' @param new_data A data frame containing the new data
 #' @param type Type of prediction: "response" (default), "prob" (for classification), "class" (for classification)
 #' @param ... Additional arguments
@@ -83,7 +83,7 @@ tl_predict_nn <- function(model, new_data, type = "response", ...) {
 
     if (type == "prob") {
       # Get class probabilities
-      probs <- as.data.frame(nnet::predict.nnet(fit, newdata = new_data, type = "raw", ...))
+      probs <- as.data.frame(predict(fit, newdata = new_data, type = "raw", ...))
 
       # For binary classification
       if (length(levels) == 2) {
@@ -108,7 +108,7 @@ tl_predict_nn <- function(model, new_data, type = "response", ...) {
       return(prob_df)
     } else if (type == "class") {
       # Get probabilities first
-      probs <- as.data.frame(nnet::predict.nnet(fit, newdata = new_data, type = "raw", ...))
+      probs <- as.data.frame(predict(fit, newdata = new_data, type = "raw", ...))
 
       # For binary classification
       if (length(levels) == 2) {
@@ -136,14 +136,14 @@ tl_predict_nn <- function(model, new_data, type = "response", ...) {
     }
   } else {
     # Regression predictions
-    preds <- as.vector(nnet::predict.nnet(fit, newdata = new_data, type = "raw", ...))
+    preds <- as.vector(predict(fit, newdata = new_data, type = "raw", ...))
     return(preds)
   }
 }
 
 #' Plot neural network architecture
 #'
-#' @param model A tidylearn neural network model object
+#' @param model A tidysl neural network model object
 #' @param ... Additional arguments
 #' @return A ggplot object with neural network architecture
 #' @importFrom ggplot2 ggplot aes geom_segment geom_point geom_text theme_void
@@ -219,7 +219,7 @@ tl_tune_nn <- function(data, formula, is_classification = FALSE,
       )
 
       # Make predictions
-      preds <- nnet::predict.nnet(nn, newdata = test_data, type = "raw")
+      preds <- predict(nn, newdata = test_data, type = "raw")
 
       # Calculate error
       if (is_classification) {
@@ -288,7 +288,7 @@ tl_tune_nn <- function(data, formula, is_classification = FALSE,
 
 #' Plot neural network training history
 #'
-#' @param model A tidylearn neural network model object
+#' @param model A tidysl neural network model object
 #' @param ... Additional arguments
 #' @return A ggplot object with training history
 #' @importFrom ggplot2 ggplot aes geom_line labs theme_minimal
